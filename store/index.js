@@ -13,6 +13,9 @@ export const PHOTION_LOCAL_STORAGE_SECRETS_KEY = 'PHOTION_LOCAL_STORAGE_SECRETS_
  * @returns {object}
  */
 export const state = () => ({
+    media: {
+        projects: {},
+    },
     site: {
         domain: '',
         title: '',
@@ -94,3 +97,6 @@ export const actions = {
     },
 
 };
+
+
+export const strict = false;

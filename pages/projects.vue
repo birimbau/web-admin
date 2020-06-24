@@ -1,13 +1,13 @@
 <template>
     <v-container>
         <h2 class="mb5">
-            Categories
+            Projects
         </h2>
         <v-list>
-            <project-row v-for="category in categories" :key="category.id" :origin="category.id" />
+            <project-row v-for="project in projects" :key="project.id" :project-uuid="project.uuid" />
         </v-list>
         <v-btn color="primary" @click="add()">
-            Create new category
+            Create new project
         </v-btn>
     </v-container>
 </template>
@@ -21,14 +21,14 @@ export default {
         ProjectRow,
     },
     computed: {
-        categories() {
-            return this.$store.state.categories;
+        projects() {
+            return this.$store.state.media.projects;
         },
     },
     methods: {
         add() {
-            const category = this.$models.new('MediaCategory');
-            this.$store.commit('categories/add', category);
+            const project = this.$models.new('Project');
+            this.$set(this.$store.state.media.projects, project.uuid, project);
         },
     },
 };

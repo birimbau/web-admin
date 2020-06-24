@@ -16,6 +16,7 @@
     "@nuxtjs/axios": "^5.11.0",
     "nuxt": "^2.13.0",
     "openpgp": "^4.10.4",
+    "uuid": "^8.2.0",
     "vuex-map-fields": "^1.4.0"
   },
   "devDependencies": {
