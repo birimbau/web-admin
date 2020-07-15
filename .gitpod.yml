@@ -3,3 +3,17 @@ image:
 
 tasks:
   - init: yarn install
+  - init: sleep 1 && while [ -f /tmp/.npm-lock ]; do sleep 1; done
+    command: npm run cy:open
+
+ports:
+  - port: 3000
+    onOpen: ignore
+  - port: 34671
+    onOpen: ignore
+  - port: 5900
+    onOpen: ignore
+  - port: 6080
+    onOpen: open-browser
+  - port: 10000
+    onOpen: ignore
