@@ -24,7 +24,7 @@
                 </v-row>
             </v-col>
             <v-col cols="12" sm="6">
-                <pre>{{ encrypted }}</pre>
+                <pre>{{ encrypted.payload }}</pre>
             </v-col>
         </v-row>
     </div>

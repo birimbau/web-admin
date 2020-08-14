@@ -1,12 +1,25 @@
+import { LocalStorageHandler } from 'keylocal/dist/storage/localStorage';
+import { PasswordHandler } from 'keylocal/dist/strategy/pgp/password';
 import { getField, updateField } from 'vuex-map-fields';
-
-import { decryptString, encryptString } from '@/app/pgp';
 
 /**
  * Local storage key for the secrets.
  * @const
  */
 export const PHOTION_LOCAL_STORAGE_SECRETS_KEY = 'PHOTION_LOCAL_STORAGE_SECRETS_KEY';
+
+/**
+ * Local storage secrets handler.
+ * @const
+ */
+const lsh = new LocalStorageHandler(
+    PHOTION_LOCAL_STORAGE_SECRETS_KEY,
+    {
+        strategy: new PasswordHandler(),
+        localStorage: window.localStorage,
+    },
+);
+
 
 /**
  * Generates the state for the application.
@@ -65,10 +78,8 @@ export const mutations = {
 export const actions = {
 
     'secrets/encrypt': async ({ state }, password) => {
-        const secrets = JSON.stringify(state.secrets);
-        const encrypted = await encryptString(secrets, password);
-
-        return encrypted;
+        const serialized = await lsh.serialize({ password }, state.secrets);
+        return serialized;
     },
 
     /**
@@ -78,11 +89,8 @@ export const actions = {
      * @param {string} password
      */
     'secrets/from-local': async ({ commit }, password) => {
-        const encrypted = window.localStorage.getItem(PHOTION_LOCAL_STORAGE_SECRETS_KEY);
-        const decrypted = await decryptString(encrypted, password);
-        const secrets = JSON.parse(decrypted);
-
-        commit('secrets/load', secrets);
+        const deserialized = await lsh.load({ password });
+        commit('secrets/load', deserialized);
     },
 
     /**
@@ -91,9 +99,8 @@ export const actions = {
      * @param {object} param0.state
      * @param {string} password
      */
-    'secrets/to-local': async ({ dispatch }, password) => {
-        const encrypted = await dispatch('secrets/encrypt', password);
-        window.localStorage.setItem(PHOTION_LOCAL_STORAGE_SECRETS_KEY, encrypted);
+    'secrets/to-local': async ({ dispatch, state }, password) => {
+        await lsh.save({ password }, state.secrets);
     },
 
 };

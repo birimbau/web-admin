@@ -90,6 +90,13 @@ export default {
   ** See https://nuxtjs.org/api/configuration-build/
   */
     build: {
+        extend(config, ctx) {
+            if (ctx.isDev) {
+                // Set the source maps
+                // They are different to allow VS Code debugging
+                config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map';
+            }
+        },
     },
 
     server: {

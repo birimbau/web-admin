@@ -32,6 +32,7 @@
     "cypress": "^4.10.0",
     "eslint": "^7.2.0",
     "eslint-plugin-nuxt": "^1.0.0",
+    "keylocal": "^0.1.5",
     "jest": "^26.0.1",
     "vue-jest": "^3.0.4"
   }
