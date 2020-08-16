@@ -1,40 +1,54 @@
 <template>
-    <v-app dark>
-        <h1 v-if="error.statusCode === 404">
-            {{ pageNotFound }}
-        </h1>
-        <h1 v-else>
-            {{ otherError }}
-        </h1>
-        <NuxtLink to="/">
-            Home page
-        </NuxtLink>
-    </v-app>
+  <v-app dark>
+    <h1 v-if="error && error.statusCode === 404">
+      {{ pageNotFound }}
+    </h1>
+    <h1 v-else>
+      {{ otherError }}
+    </h1>
+    <NuxtLink to="/">
+      Home page
+    </NuxtLink>
+  </v-app>
 </template>
 
-<script>
-export default {
-    layout: 'empty',
-    props: {
-        error: {
-            type: Object,
-            default: null,
-        },
-    },
-    data () {
-        return {
-            pageNotFound: '404 Not Found',
-            otherError: 'An error occurred',
-        };
-    },
-    head () {
-        const title =
-      this.error.statusCode === 404 ? this.pageNotFound : this.otherError;
-        return {
-            title,
-        };
-    },
+<script lang="ts">
+import { defineComponent } from '@vue/composition-api';
+
+export const PAGE_NOT_FOUND = {
+  title: '404 Not Found',
 };
+
+export const DEFAULT_ERROR = {
+  title: 'An error occurred',
+};
+
+export default defineComponent({
+
+  layout: 'empty',
+
+  props: {
+    error: {
+      type: Object,
+      default: null,
+    },
+  },
+
+  head() {
+    let title: string;
+
+    if (this.error && this.error.statusCode === 404) {
+      title = PAGE_NOT_FOUND.title;
+    } else {
+      title = DEFAULT_ERROR.title;
+    }
+
+    return {
+      title,
+    };
+  },
+
+});
 </script>
 
 <style scoped>

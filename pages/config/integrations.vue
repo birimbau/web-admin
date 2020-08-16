@@ -1,63 +1,45 @@
 <template>
+  <div>
     <div>
-        <div>
-            <h1 class="text-h4">
-                Integrations
-            </h1>
-        </div>
-        <v-row>
-            <v-col cols="12" sm="6">
-                <v-text-field v-model="password" type="password" label="Encryption Password" />
-                <v-btn text color="primary" @click="$store.dispatch('secrets/to-local', password)">
-                    Save
-                </v-btn>
-                <v-btn text color="error" @click="$store.dispatch('secrets/from-local', password)">
-                    Restore
-                </v-btn>
-                <v-row>
-                    <v-col cols="12" sm="6">
-                        <v-text-field v-model="googleCloudPublic" label="Google Cloud Platform API Key" @input="encrypt" />
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                        <v-text-field v-model="googleCloudPrivate" label="Google Cloud Platform API Secret" @input="encrypt" />
-                    </v-col>
-                </v-row>
-            </v-col>
-            <v-col cols="12" sm="6">
-                <pre>{{ encrypted.payload }}</pre>
-            </v-col>
-        </v-row>
+      <h1 class="text-h4">
+        Integrations
+      </h1>
     </div>
+    <v-row>
+      <v-col cols="12" sm="6">
+        <v-text-field v-model="password" type="password" label="Encryption Password" />
+        <v-btn text color="primary" @click="secrets.save">
+          Save
+        </v-btn>
+        <v-btn text color="error" @click="secrets.load">
+          Restore
+        </v-btn>
+        <v-row>
+          <v-col cols="12" sm="6">
+            <v-text-field v-model="secrets.values.GCP_API_KEY.value" label="Google Cloud Platform API Key" />
+          </v-col>
+          <v-col cols="12" sm="6">
+            <v-text-field v-model="secrets.values.GCP_API_SECRET.value" label="Google Cloud Platform API Secret" />
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
-<script>
-import { mapFields } from 'vuex-map-fields';
+<script lang="ts">
+import { defineComponent } from '@vue/composition-api';
 
-export default {
+import { password } from '@/hooks/encryption';
+import { secrets } from '@/hooks/secrets';
 
-    data() {
-        return {
-            password: 'pass',
-            encrypted: '',
-        };
-    },
+export default defineComponent({
 
-    computed: {
-        ...mapFields({
-            googleCloudPublic: 'secrets.googleCloud.public',
-            googleCloudPrivate: 'secrets.googleCloud.private',
-        }),
-    },
-
-    mounted() {
-        this.encrypt();
-    },
-
-    methods: {
-        async encrypt() {
-            this.encrypted = await this.$store.dispatch('secrets/encrypt', this.password);
-        },
-    },
-
-};
+  setup() {
+    return {
+      secrets,
+      password,
+    };
+  },
+});
 </script>
