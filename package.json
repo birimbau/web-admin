@@ -17,6 +17,7 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.11.0",
     "@vue/composition-api": "^1.0.0-beta.10",
+    "axios": "^0.19.2",
     "nuxt": "^2.13.0",
     "openpgp": "^4.10.4",
     "uuid": "^8.2.0",
@@ -37,6 +38,7 @@
     "babel-jest": "^26.0.1",
     "cypress": "^4.10.0",
     "eslint": "^7.7.0",
+    "eslint-plugin-cypress": "^2.11.1",
     "eslint-plugin-nuxt": "^1.0.0",
     "jest": "^26.0.1",
     "keylocal": "^0.1.5",

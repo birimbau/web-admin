@@ -23,6 +23,7 @@ export default {
 
   plugins: [
     '@/plugins/composition-api',
+    '@/plugins/setup',
   ],
 
   components: true,

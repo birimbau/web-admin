@@ -1,7 +1,12 @@
-import { ref } from '@vue/composition-api';
+import { ref, Ref } from '@vue/composition-api';
 
+import { Project } from '@/types/models.interface';
 
-export const media = ref({
+export const media: Ref<{
+  projects: {
+    [key: string]: Project
+  }
+}> = ref({
   projects: {},
 });
 
