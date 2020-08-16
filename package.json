@@ -16,24 +16,31 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.11.0",
+    "@vue/composition-api": "^1.0.0-beta.10",
     "nuxt": "^2.13.0",
     "openpgp": "^4.10.4",
     "uuid": "^8.2.0",
     "vuex-map-fields": "^1.4.0"
   },
   "devDependencies": {
+    "@nuxt/types": "^2.14.1",
+    "@nuxt/typescript-build": "^2.0.2",
+    "@nuxt/typescript-runtime": "^1.0.0",
     "@nuxtjs/eslint-config": "^3.0.0",
+    "@nuxtjs/eslint-config-typescript": "^3.0.0",
     "@nuxtjs/eslint-module": "^2.0.0",
     "@nuxtjs/vuetify": "^1.11.2",
+    "@types/uuid": "^8.3.0",
     "@vue/test-utils": "^1.0.3",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.0.1",
     "cypress": "^4.10.0",
-    "eslint": "^7.2.0",
+    "eslint": "^7.7.0",
     "eslint-plugin-nuxt": "^1.0.0",
-    "keylocal": "^0.1.5",
     "jest": "^26.0.1",
+    "keylocal": "^0.1.5",
+    "typescript": "^3.9.7",
     "vue-jest": "^3.0.4"
   }
 }
