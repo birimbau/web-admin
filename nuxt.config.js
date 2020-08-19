@@ -31,6 +31,7 @@ export default {
   buildModules: [
     '@nuxtjs/eslint-module',
     '@nuxt/typescript-build',
+    '@nuxtjs/composition-api',
     '@nuxtjs/vuetify',
   ],
 

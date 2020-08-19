@@ -1,5 +1,5 @@
 <template>
-  <div :id="`${name}__${id}`" :data-target-name="name" :data-target-id="id">
+  <div :id="`${name}__${id}`" :target-name="name" :target-id="id">
     <slot />
   </div>
 </template>
