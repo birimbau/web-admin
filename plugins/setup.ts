@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { Concept, ConceptInterface } from '@/app/models/Concept';
+import { Concept, IConcept } from '@/app/models/Concept';
 import { media } from '@/hooks/state';
 import { Project } from '@/types/models.interface';
 
@@ -15,7 +15,7 @@ export const loadState = async () => {
   }
 
   if (response.data.concepts) {
-    response.data.concepts.forEach((concept: ConceptInterface) => {
+    response.data.concepts.forEach((concept: IConcept) => {
       media.value.concepts[concept.uuid] = new Concept(concept);
     });
   }

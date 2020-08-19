@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import { concepts } from '../../../../../tests/mocks/models';
+import { concepts, medias } from '../../../../../tests/mocks/models';
 
 context('/media/detail/:uuid', () => {
   describe('With no uuid', () => {
@@ -21,10 +21,13 @@ context('/media/detail/:uuid', () => {
       cy.server();
       cy.route({
         method: 'GET',
-        url: '/api',
-        response: {
-          concepts: [concept],
-        },
+        url: '/api/concept',
+        response: concept,
+      });
+      cy.route({
+        method: 'GET',
+        url: '/api/medias',
+        response: medias.valid,
       });
       cy.visit(`/media/detail/${concept.uuid}`);
     });

@@ -1,12 +1,6 @@
 import { Model, IModelProps } from '@/app/models/Model';
 
 
-export enum MediaType {
-  IMAGE = 'IMAGE',
-  SOUND = 'SOUND',
-  VIDEO = 'VIDEO',
-}
-
 export enum MediaRole {
   PREVIEW = 'PREVIEW',
   FULL_QUALITY = 'FULL_QUALITY',
@@ -21,20 +15,24 @@ export enum MediaStorage {
 
 export interface IMediaProps extends IModelProps {
   concept: string;
-  type: MediaType;
   role?: MediaRole;
   storage?: MediaStorage;
+  data: string;
 }
 
 export interface IMedia extends Required<IMediaProps> {}
 export interface Media extends IMedia {}
 
 export class Media extends Model<IMediaProps> {
+  static Role = MediaRole;
+  static Storage = MediaStorage;
+  file: any;
+
   constructor(props: IMediaProps) {
     super(props);
     this.concept = props.concept || '';
-    this.type = props.type || MediaType.IMAGE;
     this.role = props.role || MediaRole.PREVIEW;
     this.storage = props.storage || MediaStorage.FREQUENT_ACCESS;
+    this.data = props.data;
   }
 }
