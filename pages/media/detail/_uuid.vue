@@ -8,10 +8,20 @@
           <v-text-field v-model="concept.description" type="text" name="concept__description" label="Description" />
           <v-select v-model="concept.type" label="Type" :items="types" name="concept__type" />
           <date-picker v-model="concept.date" label="Date" name="concept__date" />
-          <v-file-input id="concept__file" v-model="file" show-size label="Add media" name="concept__file" />
+          <div v-if="concept.created">
+            <v-file-input id="concept__file" v-model="file" show-size label="Add media" name="concept__file" />
+            <v-btn small text color="error" data-cy="concept__remove" @click="aws.remove(concept)">
+              Delete Concept
+            </v-btn>
+          </div>
+          <div v-else>
+            <v-btn small text color="primary" data-cy="concept__create" @click="aws.create(concept)">
+              Create Concept
+            </v-btn>
+          </div>
         </v-col>
         <v-col cols="12" sm="6">
-          <media-card v-for="media in medias" :key="media.value.uuid" :concept="concept" :media="media.value" test="t" />
+          <media-card v-for="media in medias" :key="media.value.uuid" :concept="concept" :media="media.value" />
         </v-col>
       </v-row>
     </target>
@@ -23,6 +33,7 @@ import axios from 'axios';
 import { Ref } from '@vue/composition-api';
 import { defineComponent, ref, useContext, onBeforeMount, watch } from '@nuxtjs/composition-api';
 
+import { aws } from '@/app/api/aws';
 import { Concept } from '@/app/models/Concept';
 import { Media, IMedia } from '@/app/models/Media';
 
@@ -86,6 +97,7 @@ export default defineComponent({
     });
 
     return {
+      aws,
       concept,
       medias,
       file,

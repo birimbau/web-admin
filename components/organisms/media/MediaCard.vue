@@ -9,12 +9,17 @@
           <v-select v-model="media.role" label="Role" :items="roles" />
           <v-select v-model="media.storage" label="Storage" :items="storages" />
         </div>
-        <div>
+        <div v-if="media.created">
           <v-btn text small color="primary">
             Download
           </v-btn>
-          <v-btn text small color="error">
+          <v-btn text small color="error" @click="aws.remove(media)">
             Delete
+          </v-btn>
+        </div>
+        <div v-else>
+          <v-btn text small color="error" @click="aws.create(media)">
+            Upload
           </v-btn>
         </div>
       </v-col>
@@ -25,6 +30,7 @@
 <script lang="ts">
 import { defineComponent, computed } from '@vue/composition-api';
 
+import { aws } from '@/app/api/aws';
 import { Concept } from '@/app/models/Concept';
 import { Media } from '@/app/models/Media';
 import { toOption } from '@/app/utils';
@@ -63,6 +69,7 @@ export default defineComponent({
     const preview = computed(() => Component[props.concept.type]);
 
     return {
+      aws,
       roles,
       storages,
       preview,

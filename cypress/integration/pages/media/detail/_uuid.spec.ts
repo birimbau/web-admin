@@ -45,10 +45,19 @@ context('/media/detail/:uuid', () => {
         .should('have.value', targetDate);
 
       cy.get('#concept__file')
+        .should('not.exist');
+
+      cy.get('[data-cy="concept__create"]')
+        .click();
+
+      cy.get('#concept__file')
         .attachFile('assets/alinatrifan.sheffield.jpg', 'image/jpg')
         .should('have.value', 'C:\\fakepath\\assets/alinatrifan.sheffield.jpg')
         .trigger('change', { force: true })
         .should('have.value', '');
+
+      cy.get('[data-cy="concept__remove"]')
+        .click();
     });
   });
 
