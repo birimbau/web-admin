@@ -12,11 +12,13 @@
         :label="label"
         :value="value"
         v-bind="attrs"
+        :name="name"
+        :data-cy="`input__${name}`"
         @input="$emit('input', $event)"
         v-on="on"
       />
     </template>
-    <v-date-picker v-model="value" @input="showMenu = false" />
+    <v-date-picker :value="value" :data-cy="`picker__${name}`" @input="onInput" />
   </v-menu>
 </template>
 
@@ -26,6 +28,10 @@ import { defineComponent, ref } from '@nuxtjs/composition-api';
 export default defineComponent({
 
   props: {
+    name: {
+      type: String,
+      default: '',
+    },
     value: {
       type: String,
       required: true,
@@ -36,11 +42,17 @@ export default defineComponent({
     },
   },
 
-  setup() {
+  setup(_props, { emit }) {
     const showMenu = ref(false);
+
+    const onInput = (newValue: string) => {
+      showMenu.value = false;
+      emit('input', newValue);
+    };
 
     return {
       showMenu,
+      onInput,
     };
   },
 });

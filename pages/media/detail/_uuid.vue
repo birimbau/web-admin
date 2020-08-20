@@ -6,13 +6,12 @@
         <v-col cols="12" sm="6">
           <v-text-field v-model="concept.name" type="text" name="concept__name" label="Name" />
           <v-text-field v-model="concept.description" type="text" name="concept__description" label="Description" />
-          <v-select v-model="concept.type" label="Type" :items="types" />
-
+          <v-select v-model="concept.type" label="Type" :items="types" name="concept__type" />
           <date-picker v-model="concept.date" label="Date" name="concept__date" />
-          <v-file-input show-size label="Add media" @input.native="addMedia" />
+          <v-file-input id="concept__file" v-model="file" show-size label="Add media" name="concept__file" />
         </v-col>
         <v-col cols="12" sm="6">
-          <media-card v-for="media in medias" :key="media.value.uuid" :concept="concept" :media="media.value" />
+          <media-card v-for="media in medias" :key="media.value.uuid" :concept="concept" :media="media.value" test="t" />
         </v-col>
       </v-row>
     </target>
@@ -22,7 +21,7 @@
 <script lang="ts">
 import axios from 'axios';
 import { Ref } from '@vue/composition-api';
-import { defineComponent, ref, useContext, onBeforeMount } from '@nuxtjs/composition-api';
+import { defineComponent, ref, useContext, onBeforeMount, watch } from '@nuxtjs/composition-api';
 
 import { Concept } from '@/app/models/Concept';
 import { Media, IMedia } from '@/app/models/Media';
@@ -55,6 +54,7 @@ export default defineComponent({
   setup() {
     const context = useContext();
 
+    const file: Ref<any> = ref(null);
     const concept = ref(new Concept({ type: Concept.Type.IMAGE }));
     const medias: Array<Ref<Media>> = [];
 
@@ -71,28 +71,24 @@ export default defineComponent({
       };
     });
 
-    const addMedia = async ($event: any) => {
-      if (!$event.target || !$event.target.files) {
-        return;
+    watch(file, async () => {
+      if (file.value) {
+        const data = await readFile(file.value);
+
+        const media = new Media({
+          concept: concept.value.uuid,
+          data,
+        });
+        medias.unshift(ref(media));
+
+        file.value = null;
       }
-      const data = await readFile($event.target.files[0]);
-      $event.target.value = '';
-
-      const media = new Media({
-        concept: concept.value.uuid,
-        data,
-      });
-
-
-      medias.push(ref(media));
-
-      return media;
-    };
+    });
 
     return {
       concept,
       medias,
-      addMedia,
+      file,
       types: Object.values(Concept.Type).map(toOption),
     };
   },
