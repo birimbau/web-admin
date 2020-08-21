@@ -1,7 +1,7 @@
 
 import moment from 'moment';
 
-import { Model, IModelProps } from '@/app/models/Model';
+import { Model, ModelProps, FieldCollection, field } from '@/app/models/Model';
 
 export enum ConceptType {
   IMAGE = 'IMAGE',
@@ -9,24 +9,24 @@ export enum ConceptType {
   VIDEO = 'VIDEO',
 }
 
-export interface IConceptProps extends IModelProps {
+export interface ConceptProps extends ModelProps {
   name?: string;
   description?: string;
   type: ConceptType,
   date?: string;
 }
 
-export interface IConcept extends Required<IConceptProps> {}
-export interface Concept extends IConcept {}
+export interface Concept extends Required<ConceptProps> {}
 
-export class Concept extends Model<IConceptProps> {
+export class Concept extends Model<ConceptProps> {
+  static namespace = 'concepts'
   static Type = ConceptType;
 
-  constructor(props: IConceptProps) {
-    super(props);
-    this.name = props.name ?? '';
-    this.description = props.description ?? '';
-    this.type = props.type;
-    this.date = props.date ?? moment().format('YYYY-MM-DD');
+  static fields: FieldCollection<Required<ConceptProps>> = {
+    ...Model.fields,
+    name: field('name', () => ''),
+    description: field('description', () => ''),
+    type: field('type'),
+    date: field('date', () => moment().format('YYYY-MM-DD')),
   }
 }

@@ -1,19 +1,20 @@
 
-import { Model, IModelProps } from '@/app/models/Model';
+import { Model, ModelProps, FieldCollection, field } from '@/app/models/Model';
 
-export interface IProjectProps extends IModelProps {
+export interface ProjectProps extends ModelProps {
   name?: string;
   description?: string;
 }
 
-export interface IProject extends Required<IProjectProps> {}
-export interface Project extends IProject {}
+export interface Project extends Required<ProjectProps> {}
 
 
-export class Project extends Model<IProjectProps> {
-  constructor(props: IProjectProps) {
-    super(props);
-    this.name = props.name ?? '';
-    this.description = props.description ?? '';
-  }
+export class Project extends Model<ProjectProps> {
+  static namespace = 'projects'
+
+  static fields: FieldCollection<Required<ProjectProps>> = {
+    ...Model.fields,
+    name: field('name', () => ''),
+    description: field('description', () => ''),
+  };
 }

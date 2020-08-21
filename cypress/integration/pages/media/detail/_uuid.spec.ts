@@ -68,7 +68,7 @@ context('/media/detail/:uuid', () => {
       cy.server();
       cy.route({
         method: 'GET',
-        url: '/api/concept',
+        url: `/api/concepts/${concept.uuid}`,
         response: concept,
       });
       cy.route({

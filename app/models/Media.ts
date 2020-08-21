@@ -1,4 +1,4 @@
-import { Model, IModelProps } from '@/app/models/Model';
+import { Model, ModelProps, FieldCollection, field } from '@/app/models/Model';
 
 
 export enum MediaRole {
@@ -13,26 +13,28 @@ export enum MediaStorage {
   ARCHIVE = 'ARCHIVE',
 }
 
-export interface IMediaProps extends IModelProps {
+export interface MediaProps extends ModelProps {
   concept: string;
   role?: MediaRole;
   storage?: MediaStorage;
   data: string;
 }
 
-export interface IMedia extends Required<IMediaProps> {}
-export interface Media extends IMedia {}
+export interface Media extends Required<MediaProps> {}
 
-export class Media extends Model<IMediaProps> {
+export class Media extends Model<MediaProps> {
+  static namespace = 'medias';
+
   static Role = MediaRole;
   static Storage = MediaStorage;
-  file: any;
 
-  constructor(props: IMediaProps) {
-    super(props);
-    this.concept = props.concept || '';
-    this.role = props.role || MediaRole.PREVIEW;
-    this.storage = props.storage || MediaStorage.FREQUENT_ACCESS;
-    this.data = props.data;
+  static fields: FieldCollection<Required<MediaProps>> = {
+    ...Model.fields,
+    concept: field('concept', () => ''),
+    role: field('role', () => MediaRole.PREVIEW),
+    storage: field('storage', () => MediaStorage.FREQUENT_ACCESS),
+    data: field('data'),
   }
+
+  file: any;
 }

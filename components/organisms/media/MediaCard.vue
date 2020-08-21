@@ -13,12 +13,12 @@
           <v-btn text small color="primary">
             Download
           </v-btn>
-          <v-btn text small color="error" @click="aws.remove(media)">
+          <v-btn text small color="error" @click="client.remove(media)">
             Delete
           </v-btn>
         </div>
         <div v-else>
-          <v-btn text small color="error" @click="aws.create(media)">
+          <v-btn text small color="error" @click="client.create(media)">
             Upload
           </v-btn>
         </div>
@@ -30,7 +30,7 @@
 <script lang="ts">
 import { defineComponent, computed } from '@vue/composition-api';
 
-import { aws } from '@/app/api/aws';
+import { client } from '@/hooks/api';
 import { Concept } from '@/app/models/Concept';
 import { Media } from '@/app/models/Media';
 import { toOption } from '@/app/utils';
@@ -69,7 +69,7 @@ export default defineComponent({
     const preview = computed(() => Component[props.concept.type]);
 
     return {
-      aws,
+      client,
       roles,
       storages,
       preview,

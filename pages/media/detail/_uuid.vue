@@ -10,12 +10,12 @@
           <date-picker v-model="concept.date" label="Date" name="concept__date" />
           <div v-if="concept.created">
             <v-file-input id="concept__file" v-model="file" show-size label="Add media" name="concept__file" />
-            <v-btn small text color="error" data-cy="concept__remove" @click="aws.remove(concept)">
+            <v-btn small text color="error" data-cy="concept__remove" @click="client.remove(concept)">
               Delete Concept
             </v-btn>
           </div>
           <div v-else>
-            <v-btn small text color="primary" data-cy="concept__create" @click="aws.create(concept)">
+            <v-btn small text color="primary" data-cy="concept__create" @click="client.create(concept)">
               Create Concept
             </v-btn>
           </div>
@@ -33,7 +33,7 @@ import axios from 'axios';
 import { Ref } from '@vue/composition-api';
 import { defineComponent, ref, useContext, onBeforeMount, watch } from '@nuxtjs/composition-api';
 
-import { aws } from '@/app/api/aws';
+import { client } from '@/hooks/api';
 import { Concept } from '@/app/models/Concept';
 import { Media, IMedia } from '@/app/models/Media';
 
@@ -97,7 +97,7 @@ export default defineComponent({
     });
 
     return {
-      aws,
+      client,
       concept,
       medias,
       file,
