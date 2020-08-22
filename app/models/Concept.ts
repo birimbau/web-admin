@@ -1,7 +1,7 @@
 
 import moment from 'moment';
 
-import { Model, ModelProps, FieldCollection, field } from '@/app/models/Model';
+import { modelize, ModelProps } from '@/app/models/Model';
 
 export enum ConceptType {
   IMAGE = 'IMAGE',
@@ -18,15 +18,14 @@ export interface ConceptProps extends ModelProps {
 
 export interface Concept extends Required<ConceptProps> {}
 
-export class Concept extends Model<ConceptProps> {
-  static namespace = 'concepts'
+export class Concept extends modelize<ConceptProps>('concepts', ['uuid', 'name', 'description', 'type', 'date']) {
   static Type = ConceptType;
 
-  static fields: FieldCollection<Required<ConceptProps>> = {
-    ...Model.fields,
-    name: field('name', () => ''),
-    description: field('description', () => ''),
-    type: field('type'),
-    date: field('date', () => moment().format('YYYY-MM-DD')),
+  constructor(props: ConceptProps) {
+    super(props);
+    this.name = props.name ?? '';
+    this.description = props.description ?? '';
+    this.type = props.type;
+    this.date = props.date ?? moment().format('YYYY-MM-DD');
   }
 }

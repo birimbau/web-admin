@@ -1,4 +1,4 @@
-import { Model, ModelProps, FieldCollection, field } from '@/app/models/Model';
+import { modelize, ModelProps } from '@/app/models/Model';
 
 
 export enum MediaRole {
@@ -22,19 +22,17 @@ export interface MediaProps extends ModelProps {
 
 export interface Media extends Required<MediaProps> {}
 
-export class Media extends Model<MediaProps> {
-  static namespace = 'medias';
-
+export class Media extends modelize<MediaProps>('medias', ['uuid', 'concept', 'role', 'storage', 'data']) {
   static Role = MediaRole;
   static Storage = MediaStorage;
 
-  static fields: FieldCollection<Required<MediaProps>> = {
-    ...Model.fields,
-    concept: field('concept', () => ''),
-    role: field('role', () => MediaRole.PREVIEW),
-    storage: field('storage', () => MediaStorage.FREQUENT_ACCESS),
-    data: field('data'),
-  }
-
   file: any;
+
+  constructor(props: MediaProps) {
+    super(props);
+    this.concept = props.concept;
+    this.role = props.role ?? MediaRole.PREVIEW;
+    this.storage = props.storage ?? MediaStorage.FREQUENT_ACCESS;
+    this.data = props.data;
+  }
 }

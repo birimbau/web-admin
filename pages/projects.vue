@@ -13,22 +13,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { v4 as uuid4 } from 'uuid';
-import { defineComponent } from '@vue/composition-api';
+import { ref, defineComponent, useFetch } from '@nuxtjs/composition-api';
 
+import { Project } from '@/app/models/Project';
 import ProjectRow from '@/components/pages/projects/ProjectRow.vue';
-import { media } from '@/hooks/state';
 
-export const addProject = () => {
-  const project = {
-    uuid: uuid4(),
-    name: '',
-    description: '',
-  };
-
-  Vue.set(media.value.projects, project.uuid, project);
-};
 export default defineComponent({
 
   components: {
@@ -36,8 +25,20 @@ export default defineComponent({
   },
 
   setup() {
+    const projects = ref<Project[]>([]);
+
+    useFetch(async () => {
+      const response = await Project.list();
+      response.forEach(project => projects.value.push(project));
+    });
+
+    const addProject = () => {
+      const project = new Project({});
+      projects.value.push(project);
+    };
+
     return {
-      media,
+      projects,
       addProject,
     };
   },

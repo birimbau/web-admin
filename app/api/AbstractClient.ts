@@ -1,20 +1,9 @@
-import { AbstractModel, Model } from '@/app/models/Model';
 
 
 export abstract class AbstractClient {
-  abstract async retrieve<T, Y extends Model>(Kls: Y, uuid: string): Promise<Model>;
-
-  async list(_namespace: string) {}
-
-  async create(model: AbstractModel) {
-    await Promise.resolve();
-    model.created = true;
-  }
-
-  async update(_model: AbstractModel) {}
-
-  async remove(model: AbstractModel) {
-    await Promise.resolve();
-    model.created = false;
-  }
+  abstract async retrieve<T>(namespace: string, uuid: string): Promise<Required<T>>;
+  abstract async list<T>(namespace: string): Promise<Required<T>[]>;
+  abstract async create<T>(namespace: string, values: Required<T>): Promise<Required<T>>;
+  abstract async update<T>(namespace: string, uuid: string, values: Required<T>): Promise<Required<T>>;
+  abstract async remove<T>(namespace: string, uuid: string): Promise<void>;
 }

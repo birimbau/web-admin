@@ -3,15 +3,17 @@ import { ref, Ref, computed } from '@vue/composition-api';
 import { HttpClient } from '~/app/api/HttpClient';
 
 export enum Clients {
-  '' = 'HttpClient',
-  HttpClient = 'HttpClient',
+  '' = 'http',
+  http = 'http',
 }
 
 type Client = keyof typeof Clients;
 
+const http = new HttpClient();
+
 export const clients = {
-  '': HttpClient,
-  HttpClient,
+  '': http,
+  http,
 };
 
 export const clientName: Ref<Client> = ref('');

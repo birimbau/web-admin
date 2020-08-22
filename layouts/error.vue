@@ -31,17 +31,20 @@ export default defineComponent({
     },
   },
 
-  head() {
+  setup(props) {
     let title: string;
 
-    if (this.error && this.error.statusCode === 404) {
+    if (props.error && props.error.statusCode === 404) {
       title = PAGE_NOT_FOUND.title;
     } else {
       title = DEFAULT_ERROR.title;
     }
 
+    const head = () => ({ title });
+
     return {
       title,
+      head,
     };
   },
 

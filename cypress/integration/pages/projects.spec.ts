@@ -5,6 +5,14 @@ import { projects } from '../../../tests/mocks/models';
 context('/projects', () => {
   describe('With no projects', () => {
     beforeEach(() => {
+      cy.server();
+      cy.route({
+        method: 'GET',
+        url: '/api/projects',
+        response: {
+          projects: [],
+        },
+      });
       cy.visit('/projects');
     });
 
@@ -30,7 +38,7 @@ context('/projects', () => {
       cy.server();
       cy.route({
         method: 'GET',
-        url: '/api',
+        url: '/api/projects',
         response: {
           projects: [project],
         },

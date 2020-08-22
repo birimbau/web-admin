@@ -1,8 +1,8 @@
 <template>
   <div>
     <h1>Media</h1>
-    <div v-if="hasConcepts">
-      <target v-for="concept in media.concepts" :id="concept.uuid" :key="concept.uuid" name="media__list__detail_link">
+    <div v-if="concepts.length">
+      <target v-for="concept in concepts" :id="concept.uuid" :key="concept.uuid" name="media__list__detail_link">
         <nuxt-link :to="`/media/detail/${concept.uuid}`">
           {{ concept.name }}
         </nuxt-link>
@@ -15,10 +15,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, ref, Ref, onBeforeMount } from '@vue/composition-api';
 
 import Target from '@/components/atoms/Target.vue';
-import { media } from '@/hooks/state';
+import { Concept } from '@/app/models/Concept';
 
 export default defineComponent({
   components: {
@@ -26,11 +26,16 @@ export default defineComponent({
   },
 
   setup() {
-    const hasConcepts = computed(() => Boolean(Object.keys(media.value.concepts).length));
+    const concepts: Ref<Concept[]> = ref([]);
+
+    onBeforeMount(async () => {
+      const response = await Concept.list();
+      console.log(response);
+      response.forEach(concept => concepts.value.push(concept));
+    });
 
     return {
-      hasConcepts,
-      media,
+      concepts,
     };
   },
 });

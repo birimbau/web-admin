@@ -10,18 +10,18 @@
           <date-picker v-model="concept.date" label="Date" name="concept__date" />
           <div v-if="concept.created">
             <v-file-input id="concept__file" v-model="file" show-size label="Add media" name="concept__file" />
-            <v-btn small text color="error" data-cy="concept__remove" @click="client.remove(concept)">
+            <v-btn small text color="error" data-cy="concept__remove" @click="concept.remove()">
               Delete Concept
             </v-btn>
           </div>
           <div v-else>
-            <v-btn small text color="primary" data-cy="concept__create" @click="client.create(concept)">
+            <v-btn small text color="primary" data-cy="concept__create" @click="concept.save()">
               Create Concept
             </v-btn>
           </div>
         </v-col>
         <v-col cols="12" sm="6">
-          <media-card v-for="media in medias" :key="media.value.uuid" :concept="concept" :media="media.value" />
+          <media-card v-for="media in medias" :key="media.uuid" :concept="concept" :media="media" />
         </v-col>
       </v-row>
     </target>
@@ -29,13 +29,12 @@
 </template>
 
 <script lang="ts">
-import axios from 'axios';
 import { Ref } from '@vue/composition-api';
-import { defineComponent, ref, useContext, onBeforeMount, watch } from '@nuxtjs/composition-api';
+import { defineComponent, useContext, ref, onBeforeMount, watch } from '@nuxtjs/composition-api';
 
 import { client } from '@/hooks/api';
 import { Concept } from '@/app/models/Concept';
-import { Media, IMedia } from '@/app/models/Media';
+import { Media } from '@/app/models/Media';
 
 import Target from '@/components/atoms/Target.vue';
 import DatePicker from '@/components/atoms/DatePicker.vue';
@@ -67,18 +66,12 @@ export default defineComponent({
 
     const file: Ref<any> = ref(null);
     const concept = ref(new Concept({ type: Concept.Type.IMAGE }));
-    const medias: Array<Ref<Media>> = [];
+    const medias: Ref<Media[]> = ref([]);
 
     onBeforeMount(async () => {
       if (context.route.value.params.uuid) {
-        const conceptResponse = await axios.get('/api/concept');
-        const mediasResponse = await axios.get('/api/medias');
-
-        concept.value = new Concept(conceptResponse.data);
-        mediasResponse.data.forEach((props: IMedia) => {
-          const media = new Media(props);
-          medias.push(ref(media));
-        });
+        concept.value = await Concept.retrieve(context.route.value.params.uuid);
+        (await Media.list()).forEach(media => medias.value.push(media));
       };
     });
 
@@ -90,7 +83,7 @@ export default defineComponent({
           concept: concept.value.uuid,
           data,
         });
-        medias.unshift(ref(media));
+        medias.value.unshift(media);
 
         file.value = null;
       }

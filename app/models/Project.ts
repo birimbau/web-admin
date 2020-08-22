@@ -1,5 +1,5 @@
 
-import { Model, ModelProps, FieldCollection, field } from '@/app/models/Model';
+import { modelize, ModelProps } from '@/app/models/Model';
 
 export interface ProjectProps extends ModelProps {
   name?: string;
@@ -9,12 +9,10 @@ export interface ProjectProps extends ModelProps {
 export interface Project extends Required<ProjectProps> {}
 
 
-export class Project extends Model<ProjectProps> {
-  static namespace = 'projects'
-
-  static fields: FieldCollection<Required<ProjectProps>> = {
-    ...Model.fields,
-    name: field('name', () => ''),
-    description: field('description', () => ''),
-  };
+export class Project extends modelize<ProjectProps>('projects', ['uuid', 'name', 'description']) {
+  constructor(props: ProjectProps) {
+    super(props);
+    this.name = props.name ?? '';
+    this.description = props.description ?? '';
+  }
 }

@@ -1,54 +1,34 @@
 import axios from 'axios';
 
-import { Model } from '@/app/models/Model';
 import { AbstractClient } from '@/app/api/AbstractClient';
 
 
-interface Constructor<T> {
-  [K in keysof T];
-  new (props: any): T
-}
-
 export class HttpClient extends AbstractClient {
+  async retrieve<T>(namespace: string, uuid: string): Promise<Required<T>> {
+    const response: { data: Required<T> } = await axios.get(`/api/${namespace}/${uuid}`);
 
-  getPath(namespace: string, operation: string) {
-    return `/${this.provider}/${namespace}/${operation}`;
+    return response.data;
   }
 
-  async retrieve<T extends Model>(Kls: Constructor<T>, uuid: string): Promise<T> {
-    const kls = Kls as typeof T;
-    const response: { data: T } = await axios.get(`/${this.provider}/${Kls.namespace}/${uuid}`);
+  async list<T>(namespace: string): Promise<Required<T>[]> {
+    const response: { data: Required<T>[] } = await axios.get(`/api/${namespace}`);
 
-    const instance = new Kls(response.data);
-
-    return instance;
+    return response.data;
   }
 
-  // async list<T, Y extends Model<T>>(Kls: Y): Promise< {
-  //   await super.list(namespace);
+  async create<T>(namespace: string, values: Required<T>): Promise<Required<T>> {
+    const response: { data: Required<T> } = await axios.post(`/api/${namespace}`, values);
 
-  //   await axios.get(`/${this.provider}/${namespace}`);
-  // }
-
-  async create(namepace: string, values: any): Promise<any> {
-    const url = `/api/${namespace}`
-
-    await axios.post(url, values);
+    return response.data;
   }
 
-  async update(model: Model) {
-    await super.update(model);
+  async update<T>(namespace: string, uuid: string, values: Required<T>): Promise<Required<T>> {
+    const response: { data: Required<T> } = await axios.put(`/api/${namespace}/${uuid}`, values);
 
-    const path = this.getPath(model.namespace, 'update');
-
-    await axios.put(path);
+    return response.data;
   }
 
-  async remove(model: Model) {
-    await super.remove(model);
-
-    const path = this.getPath(model.namespace, 'delete');
-
-    await axios.delete(path);
+  async remove<T>(namespace: string, uuid: string): Promise<void> {
+    await axios.delete(`/api/${namespace}/${uuid}`);
   }
 }
