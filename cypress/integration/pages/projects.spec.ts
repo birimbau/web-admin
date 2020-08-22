@@ -6,13 +6,7 @@ context('/projects', () => {
   describe('With no projects', () => {
     beforeEach(() => {
       cy.server();
-      cy.route({
-        method: 'GET',
-        url: '/api/projects',
-        response: {
-          projects: [],
-        },
-      });
+      cy.route('GET', '/api/projects', []);
       cy.visit('/projects');
     });
 
@@ -36,13 +30,7 @@ context('/projects', () => {
 
     beforeEach(() => {
       cy.server();
-      cy.route({
-        method: 'GET',
-        url: '/api/projects',
-        response: {
-          projects: [project],
-        },
-      });
+      cy.route('GET', '/api/projects', [project]);
       cy.visit('/projects');
     });
 

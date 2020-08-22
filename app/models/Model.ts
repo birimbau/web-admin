@@ -37,7 +37,6 @@ export const modelize = <T extends ModelProps>(namespace: string, fields: Array<
 
     static async list<Y>(this: new (props: T) => Y) {
       const list = await client.value.list<T>(namespace);
-      console.log(list);
       const instances = list.map(values => new this(values));
 
       return instances;

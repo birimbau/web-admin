@@ -13,6 +13,11 @@ context('/media/detail/:uuid', () => {
 
   describe('With no uuid', () => {
     beforeEach(() => {
+      cy.server();
+      cy.route('GET', '/api/concepts/**').as('concepts/get');
+      cy.route('GET', '/api/medias').as('medias/get');
+      cy.route('POST', '/api/concepts', {}).as('concepts/post');
+      cy.route('DELETE', '/api/concepts/**', {}).as('concepts/delete');
       cy.visit('/media/detail');
     });
 
@@ -50,6 +55,8 @@ context('/media/detail/:uuid', () => {
       cy.get('[data-cy="concept__create"]')
         .click();
 
+      cy.wait('@concepts/post');
+
       cy.get('#concept__file')
         .attachFile('assets/alinatrifan.sheffield.jpg', 'image/jpg')
         .should('have.value', 'C:\\fakepath\\assets/alinatrifan.sheffield.jpg')
@@ -58,6 +65,8 @@ context('/media/detail/:uuid', () => {
 
       cy.get('[data-cy="concept__remove"]')
         .click();
+
+      cy.wait('@concepts/delete');
     });
   });
 
@@ -66,16 +75,8 @@ context('/media/detail/:uuid', () => {
 
     beforeEach(() => {
       cy.server();
-      cy.route({
-        method: 'GET',
-        url: `/api/concepts/${concept.uuid}`,
-        response: concept,
-      });
-      cy.route({
-        method: 'GET',
-        url: '/api/medias',
-        response: medias.valid,
-      });
+      cy.route('GET', `/api/concepts/${concept.uuid}`, concept).as('concepts/get');
+      cy.route('GET', '/api/medias', medias.valid).as('medias/get');
       cy.visit(`/media/detail/${concept.uuid}`);
     });
 

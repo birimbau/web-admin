@@ -4,7 +4,7 @@
       Projects
     </h2>
     <v-list>
-      <project-row v-for="project in media.projects" :key="project.uuid" :uuid="project.uuid" />
+      <project-row v-for="project in projects" :key="project.uuid" :project="project" />
     </v-list>
     <v-btn id="projects__add_project" color="primary" @click="addProject">
       Create new project

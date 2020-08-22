@@ -2,9 +2,11 @@
 
 import { concepts } from '../../../../tests/mocks/models';
 
-context.only('/media/list', () => {
+context('/media/list', () => {
   describe('With no concepts', () => {
     beforeEach(() => {
+      cy.server();
+      cy.route('GET', '/api/concepts', []);
       cy.visit('/media/list');
     });
 
@@ -18,11 +20,7 @@ context.only('/media/list', () => {
 
     beforeEach(() => {
       cy.server();
-      cy.route({
-        method: 'GET',
-        url: '/api/concepts',
-        response: [concept],
-      });
+      cy.route('GET', '/api/concepts', [concept]);
       cy.visit('/media/list');
     });
 

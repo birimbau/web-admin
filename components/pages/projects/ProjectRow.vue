@@ -18,27 +18,19 @@
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api';
 
+import { Project } from '@/app/models/Project';
 import Target from '@/components/atoms/Target.vue';
-import { media } from '@/hooks/state';
 
 export default defineComponent({
   props: {
-    uuid: {
-      type: String,
+    project: {
+      type: Project,
       required: true,
     },
   },
 
   components: {
     Target,
-  },
-
-  setup(props: { uuid: string }) {
-    const project = media.value.projects[props.uuid];
-
-    return {
-      project,
-    };
   },
 });
 </script>

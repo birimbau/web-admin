@@ -1,34 +1,63 @@
-import axios from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 import { AbstractClient } from '@/app/api/AbstractClient';
 
 
 export class HttpClient extends AbstractClient {
+  client: AxiosInstance;
+
+  constructor() {
+    super();
+    this.client = axios.create({
+      baseURL: '',
+      timeout: 2 * 1000,
+      responseType: 'json',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+  }
+
+  processResponse(response: AxiosResponse): AxiosResponse {
+    const error = (details: string) => new Error(`${response.request.method} ${response.request.url} failed: ${details}`);
+
+    if (!response.data) {
+      throw error('Incomplete `response`. No `data` found.');
+    }
+
+    if (typeof response.data === 'string') {
+      throw error('Invalid `response`. `data` is a string.');
+    }
+
+    return response;
+  }
+
   async retrieve<T>(namespace: string, uuid: string): Promise<Required<T>> {
-    const response: { data: Required<T> } = await axios.get(`/api/${namespace}/${uuid}`);
+    const response: { data: Required<T> } = this.processResponse(await this.client.get(`/api/${namespace}/${uuid}`));
 
     return response.data;
   }
 
   async list<T>(namespace: string): Promise<Required<T>[]> {
-    const response: { data: Required<T>[] } = await axios.get(`/api/${namespace}`);
+    const response: { data: Required<T>[]} = this.processResponse(await this.client.get(`/api/${namespace}`));
 
     return response.data;
   }
 
   async create<T>(namespace: string, values: Required<T>): Promise<Required<T>> {
-    const response: { data: Required<T> } = await axios.post(`/api/${namespace}`, values);
+    const response: { data: Required<T> } = this.processResponse(await this.client.post(`/api/${namespace}`, values));
 
     return response.data;
   }
 
   async update<T>(namespace: string, uuid: string, values: Required<T>): Promise<Required<T>> {
-    const response: { data: Required<T> } = await axios.put(`/api/${namespace}/${uuid}`, values);
+    const response: { data: Required<T> } = this.processResponse(await this.client.put(`/api/${namespace}/${uuid}`, values));
 
     return response.data;
   }
 
   async remove<T>(namespace: string, uuid: string): Promise<void> {
-    await axios.delete(`/api/${namespace}/${uuid}`);
+    this.processResponse(await this.client.delete(`/api/${namespace}/${uuid}`));
   }
 }

@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Ref, onBeforeMount } from '@vue/composition-api';
+import { defineComponent, ref, onBeforeMount } from '@vue/composition-api';
 
 import Target from '@/components/atoms/Target.vue';
 import { Concept } from '@/app/models/Concept';
@@ -26,11 +26,10 @@ export default defineComponent({
   },
 
   setup() {
-    const concepts: Ref<Concept[]> = ref([]);
+    const concepts = ref<Concept[]>([]);
 
     onBeforeMount(async () => {
       const response = await Concept.list();
-      console.log(response);
       response.forEach(concept => concepts.value.push(concept));
     });
 
