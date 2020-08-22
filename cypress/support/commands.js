@@ -36,3 +36,10 @@ Cypress.Commands.add('attachFile', { prevSubject: 'element' }, (el, path, mime) 
       return el;
     });
 });
+
+
+Cypress.Commands.add('waitJson', (alias) => {
+  cy.wait(alias).then((xhr) => {
+    return xhr.request.body;
+  });
+});

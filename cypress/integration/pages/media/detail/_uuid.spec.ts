@@ -12,30 +12,50 @@ context('/media/detail/:uuid', () => {
   const targetDate = moment(new Date([year, month, anotherDay].map(String).join('-'))).format('YYYY-MM-DD');
 
   describe('With no uuid', () => {
+    const concept: any = {
+      name: 'My Concept',
+      description: 'My Description',
+      type: 'IMAGE',
+      date: targetDate,
+    };
+
+    const media: any = {
+      storage: 'FREQUENT_ACCESS',
+      role: 'PREVIEW',
+    };
+
     beforeEach(() => {
       cy.server();
-      cy.route('GET', '/api/concepts/**').as('concepts/get');
-      cy.route('GET', '/api/medias').as('medias/get');
+      cy.route('GET', '/api/concepts/**', {}).as('concepts/get');
       cy.route('POST', '/api/concepts', {}).as('concepts/post');
       cy.route('DELETE', '/api/concepts/**', {}).as('concepts/delete');
+
+      cy.route('GET', '/api/medias', {}).as('medias/get');
+      cy.route('POST', '/api/medias/**/upload', {}).as('medias/upload');
+      cy.route('POST', '/api/medias', {}).as('medias/post');
+      cy.route('DELETE', '/api/medias/**', {}).as('medias/delete');
+
       cy.visit('/media/detail');
     });
 
     it('Displays a valid page', () => {
+      cy.get('[cy-target-name="media__card"]')
+        .should('not.exist');
+
       cy.get('[name="concept__name"]')
         .should('have.value', '')
         .click()
-        .type('My Concept')
-        .should('have.value', 'My Concept');
+        .type(concept.name)
+        .should('have.value', concept.name);
 
       cy.get('[name="concept__description"]')
         .should('have.value', '')
         .click()
-        .type('My Description')
-        .should('have.value', 'My Description');
+        .type(concept.description)
+        .should('have.value', concept.description);
 
       cy.get('[name="concept__type"]')
-        .should('have.value', 'IMAGE');
+        .should('have.value', concept.type);
 
       cy.get('[name="concept__date"]')
         .should('have.value', moment().format('YYYY-MM-DD'))
@@ -47,7 +67,7 @@ context('/media/detail/:uuid', () => {
         .click();
 
       cy.get('[name="concept__date"]')
-        .should('have.value', targetDate);
+        .should('have.value', concept.date);
 
       cy.get('#concept__file')
         .should('not.exist');
@@ -55,7 +75,12 @@ context('/media/detail/:uuid', () => {
       cy.get('[data-cy="concept__create"]')
         .click();
 
-      cy.wait('@concepts/post');
+      cy.wait('@concepts/post')
+        .then((xhr: any) => {
+          expect(xhr.request.body).to.contain(concept);
+          concept.uuid = xhr.request.body.uuid;
+          media.concept = concept.uuid;
+        });
 
       cy.get('#concept__file')
         .attachFile('assets/alinatrifan.sheffield.jpg', 'image/jpg')
@@ -63,10 +88,42 @@ context('/media/detail/:uuid', () => {
         .trigger('change', { force: true })
         .should('have.value', '');
 
+      cy.get('[cy-target-name="media__card"]');
+
+      cy.get('[data-cy="media__download"]')
+        .should('not.exist');
+
+      cy.get('[data-cy="media__remove"]')
+        .should('not.exist');
+
+      cy.get('[data-cy="media__upload"]')
+        .click();
+
+      cy.wait('@medias/post')
+        .then((xhr: any) => {
+          expect(xhr.request.body).to.contain(media);
+          media.uuid = xhr.request.body.uuid;
+        });
+
+      cy.wait('@medias/upload');
+
+      cy.get('[data-cy="media__download"]');
+
+      cy.get('[data-cy="media__remove"]')
+        .click();
+
+      cy.wait('@medias/delete');
+
+      cy.get('[cy-target-name="media__card"]')
+        .should('not.exist');
+
       cy.get('[data-cy="concept__remove"]')
         .click();
 
       cy.wait('@concepts/delete');
+
+      cy.get('#concept__file')
+        .should('not.exist');
     });
   });
 

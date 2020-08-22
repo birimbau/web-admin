@@ -21,7 +21,7 @@
           </div>
         </v-col>
         <v-col cols="12" sm="6">
-          <media-card v-for="media in medias" :key="media.uuid" :concept="concept" :media="media" />
+          <media-card v-for="media in medias" :key="media.uuid" :concept="concept" :media="media" @remove="removeMedia(media)" />
         </v-col>
       </v-row>
     </target>
@@ -32,7 +32,6 @@
 import { Ref } from '@vue/composition-api';
 import { defineComponent, useContext, ref, onBeforeMount, watch } from '@nuxtjs/composition-api';
 
-import { client } from '@/hooks/api';
 import { Concept } from '@/app/models/Concept';
 import { Media } from '@/app/models/Media';
 
@@ -68,6 +67,16 @@ export default defineComponent({
     const concept = ref(new Concept({ type: Concept.Type.IMAGE }));
     const medias: Ref<Media[]> = ref([]);
 
+    const addMedia = (media: Media) => medias.value.unshift(media);
+
+    const removeMedia = (media: Media) => {
+      const index = medias.value.findIndex(el => el.uuid === media.uuid);
+
+      if (index > -1) {
+        medias.value.splice(index, 1);
+      }
+    };
+
     onBeforeMount(async () => {
       if (context.route.value.params.uuid) {
         concept.value = await Concept.retrieve(context.route.value.params.uuid);
@@ -83,18 +92,20 @@ export default defineComponent({
           concept: concept.value.uuid,
           data,
         });
-        medias.value.unshift(media);
+
+        addMedia(media);
 
         file.value = null;
       }
     });
 
     return {
-      client,
       concept,
       medias,
       file,
       types: Object.values(Concept.Type).map(toOption),
+      addMedia,
+      removeMedia,
     };
   },
 });

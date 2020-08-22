@@ -22,7 +22,10 @@ export interface MediaProps extends ModelProps {
 
 export interface Media extends Required<MediaProps> {}
 
-export class Media extends modelize<MediaProps>('medias', ['uuid', 'concept', 'role', 'storage', 'data']) {
+const namespace = 'medias';
+const fields: Array<keyof MediaProps> = ['uuid', 'concept', 'role', 'storage', 'data'];
+
+export class Media extends modelize<MediaProps>(namespace, fields) {
   static Role = MediaRole;
   static Storage = MediaStorage;
 
@@ -34,5 +37,11 @@ export class Media extends modelize<MediaProps>('medias', ['uuid', 'concept', 'r
     this.role = props.role ?? MediaRole.PREVIEW;
     this.storage = props.storage ?? MediaStorage.FREQUENT_ACCESS;
     this.data = props.data;
+  }
+
+  async upload(file: any = null) {
+    // save for the latest metadata
+    await this.save();
+    await this.client.upload(namespace, this.uuid, this.$values, file || this.file);
   }
 }

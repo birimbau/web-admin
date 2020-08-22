@@ -9,5 +9,6 @@ declare namespace Cypress {
      * @example cy.get('input').attachFile('path/to/fixture.jpg', 'image/jpg'))
     */
    attachFile(path: string, mime: string): Chainable<Element>
+   waitJson(alias: string): Chainable<Element>
   }
 }

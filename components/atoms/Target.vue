@@ -1,5 +1,5 @@
 <template>
-  <div :id="`${name}__${id}`" :target-name="name" :target-id="id">
+  <div :id="`${name}__${id}`" :cy-target-name="name" :cy-target-id="id">
     <slot />
   </div>
 </template>

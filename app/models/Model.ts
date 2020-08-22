@@ -22,6 +22,14 @@ export const modelize = <T extends ModelProps>(namespace: string, fields: Array<
       this.uuid = props.uuid ?? v4();
     }
 
+    static get client() {
+      return client.value;
+    }
+
+    get client() {
+      return (this.constructor as typeof Model).client;
+    }
+
     get $values(): Required<T> {
       const entries = fields.map(key => [key, this[key as keyof ThisType<T>]]);
 
@@ -44,17 +52,17 @@ export const modelize = <T extends ModelProps>(namespace: string, fields: Array<
 
     async save() {
       if (this.created) {
-        return client.value.update<T>(namespace, this.uuid, this.$values);
+        return this.client.update<T>(namespace, this.uuid, this.$values);
       }
 
-      const response = await client.value.create<T>(namespace, this.$values);
+      const response = await this.client.create<T>(namespace, this.$values);
       this.created = true;
 
       return response;
     }
 
     async remove() {
-      const response = await client.value.remove<T>(namespace, this.uuid);
+      const response = await this.client.remove<T>(namespace, this.uuid);
       this.created = false;
 
       return response;
