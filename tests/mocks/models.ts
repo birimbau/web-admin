@@ -24,6 +24,8 @@ export const concepts = {
       tags: ['Some Tag'],
       type: 'IMAGE',
       date: '2020-08-17',
+      public: true,
+      featured: false,
     },
   ],
 };

@@ -26,6 +26,14 @@
             small-chips
           />
           <date-picker v-model="concept.date" label="Date" name="concept__date" />
+          <v-row>
+            <v-col cols="6">
+              <v-switch v-model="concept.public" class="mx-2" label="Public" name="concept__public" />
+            </v-col>
+            <v-col cols="6">
+              <v-switch v-model="concept.featured" class="mx-2" label="Featured" name="concept__featured" />
+            </v-col>
+          </v-row>
           <div v-if="concept.created">
             <v-btn small text color="error" data-cy="concept__remove" @click="concept.remove()">
               Delete Concept

@@ -16,12 +16,14 @@ export interface ConceptProps extends ModelProps {
   projects?: string[];
   tags?: string[];
   date?: string;
+  public?: boolean;
+  featured?: boolean;
 }
 
 export interface Concept extends Required<ConceptProps> {}
 
 const namespace = 'concepts';
-const fields: Array<keyof ConceptProps> = ['uuid', 'name', 'description', 'type', 'projects', 'tags', 'date'];
+const fields: Array<keyof ConceptProps> = ['uuid', 'name', 'description', 'type', 'projects', 'tags', 'date', 'public', 'featured'];
 
 export class Concept extends modelize<ConceptProps>(namespace, fields) {
   static Type = ConceptType;
@@ -34,5 +36,7 @@ export class Concept extends modelize<ConceptProps>(namespace, fields) {
     this.projects = props.projects ?? [];
     this.tags = props.tags ?? [];
     this.date = props.date ?? moment().format('YYYY-MM-DD');
+    this.public = props.public ?? false;
+    this.featured = props.featured ?? false;
   }
 }

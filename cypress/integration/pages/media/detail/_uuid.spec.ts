@@ -19,6 +19,8 @@ context('/media/detail/:uuid', () => {
       tags: ['my-tag', 'another-tag'],
       type: 'IMAGE',
       date: targetDate,
+      public: true,
+      featured: false,
     };
 
     const media: any = {
@@ -83,6 +85,13 @@ context('/media/detail/:uuid', () => {
         .find('.v-btn__content')
         .contains(anotherDay)
         .click();
+
+      cy.get('[name="concept__public"]')
+        .click({ force: true });
+
+      cy.get('[name="concept__featured"]')
+        .click({ force: true })
+        .click({ force: true });
 
       cy.get('[name="concept__date"]')
         .should('have.value', concept.date);
