@@ -33,7 +33,7 @@ export class HttpClient extends AbstractClient {
     return response;
   }
 
-  async retrieve<T>(namespace: string, uuid: string): Promise<Required<T>> {
+  async retrieve<T>(namespace: string, uuid: string): Promise<Required<T> | null> {
     const response: { data: Required<T> } = this.processResponse(await this.client.get(`/api/${namespace}/${uuid}`));
 
     return response.data;
@@ -61,7 +61,11 @@ export class HttpClient extends AbstractClient {
     this.processResponse(await this.client.delete(`/api/${namespace}/${uuid}`));
   }
 
-  async upload<T>(namespace: string, uuid: string, metadata: any, file: any): Promise<void> {
+  async uploadFile<T>(namespace: string, uuid: string, metadata: any, file: any): Promise<void> {
     this.processResponse(await this.client.post(`/api/${namespace}/${uuid}/upload`, { metadata, file }));
+  }
+
+  async deleteFile<T>(namespace: string, uuid: string, _metadata: any): Promise<void> {
+    this.processResponse(await this.client.delete(`/api/${namespace}/${uuid}/upload`));
   }
 }

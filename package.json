@@ -12,15 +12,19 @@
     "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint": "yarn lint:js",
     "test": "jest",
+    "test:cypress": "cypress run",
+    "test:integration": "yarn test --coverage=false --testMatch **/tests/integration/**/*.ts",
+    "test:unit": "yarn test --testMatch **/tests/unit/**/*.ts",
     "cy:open": "cypress open",
     "cy:run": "cypress run"
   },
   "dependencies": {
+    "@nuxt/typescript-runtime": "latest",
     "@nuxtjs/axios": "^5.11.0",
     "@nuxtjs/composition-api": "^0.12.1",
-    "@nuxt/typescript-runtime": "latest",
     "@vue/composition-api": "^1.0.0-beta.10",
     "add": "^2.0.6",
+    "aws-sdk": "^2.738.0",
     "axios": "^0.19.2",
     "moment": "^2.27.0",
     "nuxt": "latest",
@@ -30,6 +34,7 @@
     "yarn": "^1.22.4"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.10.4",
     "@cypress/webpack-preprocessor": "^5.4.4",
     "@nuxt/types": "^2.14.1",
     "@nuxt/typescript-build": "^2.0.2",
@@ -37,6 +42,7 @@
     "@nuxtjs/eslint-config-typescript": "^3.0.0",
     "@nuxtjs/eslint-module": "^2.0.0",
     "@nuxtjs/vuetify": "^1.11.2",
+    "@types/jest": "^26.0.10",
     "@types/uuid": "^8.3.0",
     "@vue/test-utils": "^1.0.3",
     "babel-core": "7.0.0-bridge.0",
@@ -46,9 +52,10 @@
     "eslint": "^7.7.0",
     "eslint-plugin-cypress": "^2.11.1",
     "eslint-plugin-nuxt": "^1.0.0",
-    "jest": "^26.0.1",
+    "jest": "^26.4.2",
     "keylocal": "^0.1.5",
-    "typescript": "^3.9.7",
+    "ts-jest": "^26.2.0",
+    "typescript": "^4.0.2",
     "vue-jest": "^3.0.4"
   }
 }

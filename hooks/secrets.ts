@@ -3,6 +3,8 @@ import { handler, password } from '@/hooks/encryption';
 
 
 export enum Secrets {
+  AWS_ACCESS_KEY = 'AWS_ACCESS_KEY',
+  AWS_SECRET_KEY = 'AWS_SECRET_KEY',
   GCP_API_KEY = 'GCP_API_KEY',
   GCP_API_SECRET = 'GCP_API_SECRET',
 }
@@ -10,6 +12,8 @@ export enum Secrets {
 
 export const secrets = {
   values: {
+    AWS_ACCESS_KEY: ref(''),
+    AWS_SECRET_KEY: ref(''),
     GCP_API_KEY: ref(''),
     GCP_API_SECRET: ref(''),
   },

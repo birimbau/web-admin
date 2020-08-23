@@ -30,10 +30,11 @@
     },
     "types": [
       "@types/node",
-      "@nuxt/types"
+      "@nuxt/types",
+      "jest"
     ]
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
   ]
 }

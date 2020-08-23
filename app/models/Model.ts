@@ -36,11 +36,14 @@ export const modelize = <T extends ModelProps>(namespace: string, fields: Array<
       return Object.fromEntries(entries);
     }
 
-    static async retrieve<Y>(this: new (props: T) => Y, uuid: string) {
+    static async retrieve<Y>(this: new (props: T) => Y | null, uuid: string) {
       const values = await client.value.retrieve<T>(namespace, uuid);
-      const instance = new this(values);
 
-      return instance;
+      if (values) {
+        return new this(values);
+      }
+
+      return null;
     }
 
     static async list<Y>(this: new (props: T) => Y) {
