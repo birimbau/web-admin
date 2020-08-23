@@ -1,4 +1,8 @@
 
+export interface SelectOption {
+  value: string | number;
+  text: string;
+}
 
 export const capitalize = (s: string) => {
   return s
@@ -8,4 +12,4 @@ export const capitalize = (s: string) => {
     .join(' ');
 };
 
-export const toOption = (value: string) => ({ value, text: capitalize(value) });
+export const toOption = (value: string): SelectOption => ({ value, text: capitalize(value) });

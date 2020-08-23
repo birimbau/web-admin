@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 import moment from 'moment';
-import { concepts, medias } from '../../../../../tests/mocks/models';
+import { concepts, medias, projects } from '../../../../../tests/mocks/models';
 
 context('/media/detail/:uuid', () => {
   const today = moment().format('YYYY-MM-DD');
@@ -15,6 +15,8 @@ context('/media/detail/:uuid', () => {
     const concept: any = {
       name: 'My Concept',
       description: 'My Description',
+      projects: [projects.valid[0].uuid],
+      tags: ['my-tag', 'another-tag'],
       type: 'IMAGE',
       date: targetDate,
     };
@@ -35,10 +37,14 @@ context('/media/detail/:uuid', () => {
       cy.route('POST', '/api/medias', {}).as('medias/post');
       cy.route('DELETE', '/api/medias/**', {}).as('medias/delete');
 
+      cy.route('GET', '/api/projects', projects.valid).as('projects/get');
+
       cy.visit('/media/detail');
     });
 
     it('Displays a valid page', () => {
+      cy.wait('@projects/get');
+
       cy.get('[cy-target-name="media__card"]')
         .should('not.exist');
 
@@ -56,6 +62,18 @@ context('/media/detail/:uuid', () => {
 
       cy.get('[name="concept__type"]')
         .should('have.value', concept.type);
+
+      cy.get('[data-cy="concept__projects"]')
+        .click({ force: true });
+
+      cy.get('.v-menu__content')
+        .find('.v-list-item')
+        .contains(projects.valid[0].name)
+        .click();
+
+      cy.get('#concept__tags')
+        .type(`${concept.tags[0]}\n`, { force: true })
+        .type(`${concept.tags[1]}\n`, { force: true });
 
       cy.get('[name="concept__date"]')
         .should('have.value', moment().format('YYYY-MM-DD'))
@@ -77,7 +95,7 @@ context('/media/detail/:uuid', () => {
 
       cy.wait('@concepts/post')
         .then((xhr: any) => {
-          expect(xhr.request.body).to.contain(concept);
+          expect(xhr.request.body).to.deep.contain(concept);
           concept.uuid = xhr.request.body.uuid;
           media.concept = concept.uuid;
         });
@@ -132,15 +150,24 @@ context('/media/detail/:uuid', () => {
 
     beforeEach(() => {
       cy.server();
+
       cy.route('GET', `/api/concepts/${concept.uuid}`, concept).as('concepts/get');
       cy.route('GET', '/api/medias', medias.valid).as('medias/get');
+      cy.route('GET', '/api/projects', projects.valid).as('projects/get');
+
       cy.visit(`/media/detail/${concept.uuid}`);
     });
 
     it('Displays a valid page', () => {
+      cy.wait('@concepts/get');
+      cy.wait('@medias/get');
+      cy.wait('@projects/get');
+
       cy.get('[name="concept__name"]').should('have.value', concept.name);
       cy.get('[name="concept__description"]').should('have.value', concept.description);
       cy.get('[name="concept__type"]').should('have.value', concept.type);
+      cy.get('[name="concept__projects"]').should('have.value', concept.projects.join(','));
+      cy.get('[name="concept__tags"]').should('have.value', concept.tags.join(','));
       cy.get('[name="concept__date"]').should('have.value', concept.date);
     });
   });

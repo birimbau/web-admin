@@ -12,13 +12,18 @@ export enum ConceptType {
 export interface ConceptProps extends ModelProps {
   name?: string;
   description?: string;
-  type: ConceptType,
+  type: ConceptType;
+  projects?: string[];
+  tags?: string[];
   date?: string;
 }
 
 export interface Concept extends Required<ConceptProps> {}
 
-export class Concept extends modelize<ConceptProps>('concepts', ['uuid', 'name', 'description', 'type', 'date']) {
+const namespace = 'concepts';
+const fields: Array<keyof ConceptProps> = ['uuid', 'name', 'description', 'type', 'projects', 'tags', 'date'];
+
+export class Concept extends modelize<ConceptProps>(namespace, fields) {
   static Type = ConceptType;
 
   constructor(props: ConceptProps) {
@@ -26,6 +31,8 @@ export class Concept extends modelize<ConceptProps>('concepts', ['uuid', 'name',
     this.name = props.name ?? '';
     this.description = props.description ?? '';
     this.type = props.type;
+    this.projects = props.projects ?? [];
+    this.tags = props.tags ?? [];
     this.date = props.date ?? moment().format('YYYY-MM-DD');
   }
 }

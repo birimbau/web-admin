@@ -7,9 +7,26 @@
           <v-text-field v-model="concept.name" type="text" name="concept__name" label="Name" />
           <v-text-field v-model="concept.description" type="text" name="concept__description" label="Description" />
           <v-select v-model="concept.type" label="Type" :items="types" name="concept__type" />
+          <v-select
+            v-model="concept.projects"
+            label="Projects"
+            :items="projects"
+            name="concept__projects"
+            data-cy="concept__projects"
+            :menu-props="{ closeOnContentClick: true }"
+            multiple
+            small-chips
+          />
+          <v-combobox
+            id="concept__tags"
+            v-model="concept.tags"
+            label="Tags"
+            name="concept__tags"
+            multiple
+            small-chips
+          />
           <date-picker v-model="concept.date" label="Date" name="concept__date" />
           <div v-if="concept.created">
-            <v-file-input id="concept__file" v-model="file" show-size label="Add media" name="concept__file" />
             <v-btn small text color="error" data-cy="concept__remove" @click="concept.remove()">
               Delete Concept
             </v-btn>
@@ -20,7 +37,8 @@
             </v-btn>
           </div>
         </v-col>
-        <v-col cols="12" sm="6">
+        <v-col v-if="concept.created" cols="12" sm="6">
+          <v-file-input id="concept__file" v-model="file" show-size label="Add media" name="concept__file" />
           <media-card v-for="media in medias" :key="media.uuid" :concept="concept" :media="media" @remove="removeMedia(media)" />
         </v-col>
       </v-row>
@@ -28,17 +46,18 @@
   </div>
 </template>
 
+
 <script lang="ts">
-import { Ref } from '@vue/composition-api';
 import { defineComponent, useContext, ref, onBeforeMount, watch } from '@nuxtjs/composition-api';
 
 import { Concept } from '@/app/models/Concept';
 import { Media } from '@/app/models/Media';
+import { Project } from '@/app/models/Project';
 
 import Target from '@/components/atoms/Target.vue';
 import DatePicker from '@/components/atoms/DatePicker.vue';
 import MediaCard from '@/components/organisms/media/MediaCard.vue';
-import { toOption } from '@/app/utils';
+import { SelectOption, toOption } from '@/app/utils';
 
 export const readFile = async (file: File): Promise<string> => {
   const fr = new FileReader();
@@ -63,9 +82,10 @@ export default defineComponent({
   setup() {
     const context = useContext();
 
-    const file: Ref<any> = ref(null);
+    const file = ref<any>(null);
     const concept = ref(new Concept({ type: Concept.Type.IMAGE }));
-    const medias: Ref<Media[]> = ref([]);
+    const medias = ref<Media[]>([]);
+    const projects = ref<SelectOption[]>([]);
 
     const addMedia = (media: Media) => medias.value.unshift(media);
 
@@ -80,8 +100,14 @@ export default defineComponent({
     onBeforeMount(async () => {
       if (context.route.value.params.uuid) {
         concept.value = await Concept.retrieve(context.route.value.params.uuid);
-        (await Media.list()).forEach(media => medias.value.push(media));
+
+        (await Media.list())
+          .forEach(media => medias.value.push(media));
       };
+
+      (await Project.list())
+        .map((project): SelectOption => ({ value: project.uuid, text: project.name }))
+        .forEach(option => projects.value.push(option));
     });
 
     watch(file, async () => {
@@ -100,9 +126,10 @@ export default defineComponent({
     });
 
     return {
+      file,
       concept,
       medias,
-      file,
+      projects,
       types: Object.values(Concept.Type).map(toOption),
       addMedia,
       removeMedia,
