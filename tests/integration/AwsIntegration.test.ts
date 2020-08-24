@@ -115,7 +115,7 @@ describe('tests.integration.app.api.aws.AwsClient', () => {
     it('Uploads the file', async () => {
       const namespace = 'fragments';
       const uuid = 'uuid1';
-      const metadata = { ext: 'ts' };
+      const metadata = { filename: 'filename', size: 1024, mime: 'application/javascript' };
 
       const client = new AwsClient();
       context.files.push({ namespace, uuid, metadata });

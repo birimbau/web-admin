@@ -41,8 +41,12 @@ export class Fragment extends modelize<FragmentProps>(namespace, fields) {
     this.meta = props.meta ?? { filename: '', mime: '', size: 0 };
   }
 
+  getFileReader() {
+    return new FileReader();
+  }
+
   async setFile(file: File) {
-    const fr = new FileReader();
+    const fr = this.getFileReader();
 
     this.file = file;
 
