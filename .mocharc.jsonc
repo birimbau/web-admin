@@ -1,9 +1,11 @@
 {
+  "color": true,
   "diff": true,
   "extension": ["js", "ts"],
   "require": [
     "ts-node/register",
-    "tsconfig-paths/register"
+    "tsconfig-paths/register",
+    "./tests/setup.ts"
   ],
   "watchFiles": ["**/*.ts"],
   "watchIgnore": ["cypress", "node_modules"]
