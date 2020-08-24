@@ -1,25 +1,25 @@
 <template>
-  <target id="media.uuid" name="media__card">
+  <target id="fragment.uuid" name="fragment__card">
     <v-card outlined class="mb-5">
       <v-row>
         <v-col cols="4">
-          <component :is="preview" :concept="concept" :media="media" />
+          <component :is="preview" :concept="concept" :fragment="fragment" />
         </v-col>
         <v-col col="8">
           <div>
-            <v-select v-model="media.role" label="Role" :items="roles" />
-            <v-select v-model="media.storage" label="Storage" :items="storages" />
+            <v-select v-model="fragment.role" label="Role" :items="roles" />
+            <v-select v-model="fragment.storage" label="Storage" :items="storages" />
           </div>
-          <div v-if="media.created">
-            <v-btn text small color="primary" data-cy="media__download">
+          <div v-if="fragment.created">
+            <v-btn text small color="primary" data-cy="fragment__download">
               Download
             </v-btn>
-            <v-btn text small color="error" data-cy="media__remove" @click="removeMedia">
+            <v-btn text small color="error" data-cy="fragment__remove" @click="removeFragment">
               Delete
             </v-btn>
           </div>
           <div v-else>
-            <v-btn text small color="error" data-cy="media__upload" @click="media.upload()">
+            <v-btn text small color="error" data-cy="fragment__upload" @click="fragment.upload()">
               Upload
             </v-btn>
           </div>
@@ -33,12 +33,12 @@
 import { defineComponent, computed } from '@vue/composition-api';
 
 import { Concept } from '@/app/models/Concept';
-import { Media } from '@/app/models/Media';
+import { Fragment } from '@/app/models/Fragment';
 import { toOption } from '@/app/utils';
 import Target from '@/components/atoms/Target.vue';
-import ImagePreview from '@/components/organisms/media/ImagePreview.vue';
-import SoundPreview from '@/components/organisms/media/SoundPreview.vue';
-import VideoPreview from '@/components/organisms/media/VideoPreview.vue';
+import ImagePreview from '@/components/organisms/fragments/ImagePreview.vue';
+import SoundPreview from '@/components/organisms/fragments/SoundPreview.vue';
+import VideoPreview from '@/components/organisms/fragments/VideoPreview.vue';
 
 enum Component {
   IMAGE = 'image-preview',
@@ -60,19 +60,19 @@ export default defineComponent({
       type: Concept,
       required: true,
     },
-    media: {
-      type: Media,
+    fragment: {
+      type: Fragment,
       required: true,
     },
   },
 
   setup(props, { emit }) {
-    const roles = Object.values(Media.Role).map(toOption);
-    const storages = Object.values(Media.Storage).map(toOption);
+    const roles = Object.values(Fragment.Role).map(toOption);
+    const storages = Object.values(Fragment.Storage).map(toOption);
     const preview = computed(() => Component[props.concept.type]);
 
-    const removeMedia = async () => {
-      await props.media.remove();
+    const removeFragment = async () => {
+      await props.fragment.remove();
       emit('remove');
     };
 
@@ -80,7 +80,7 @@ export default defineComponent({
       roles,
       storages,
       preview,
-      removeMedia,
+      removeFragment,
     };
   },
 });

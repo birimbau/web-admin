@@ -30,7 +30,7 @@ export const concepts = {
   ],
 };
 
-export const medias = {
+export const fragments = {
   valid: [
     {
       uuid: '2c19228d-125e-4499-ab5e-76a97364c1bf',

@@ -1,16 +1,16 @@
 import { ref, Ref } from '@vue/composition-api';
 
 import { Concept } from '@/app/models/Concept';
-import { Media } from '@/app/models/Media';
 import { Project } from '@/app/models/Project';
+import { Fragment } from '~/app/models/Fragment';
 
-export const media: Ref<{
+export const fragment: Ref<{
   concepts: { [key: string]: Concept },
-  media: { [key: string]: Media },
+  fragment: { [key: string]: Fragment },
   projects: { [key: string]: Project },
 }> = ref({
   concepts: {},
-  media: {},
+  fragment: {},
   projects: {},
 });
 
@@ -27,7 +27,7 @@ export const user = ref({
 });
 
 export const useState = () => ({
-  media,
+  fragment,
   site,
   user,
 });

@@ -38,16 +38,16 @@
         <v-card outlined class="elevation-10">
           <v-card-text>
             <h3 class="mb-5">
-              Media
+              Concepts
             </h3>
             <div>
-              <nuxt-link :to="{ name: 'media-detail-id' }">
-                Add new media
+              <nuxt-link :to="{ name: 'concepts-detail-id' }">
+                Add new concepts
               </nuxt-link>
             </div>
             <div>
-              <nuxt-link :to="{ name: 'media-list' }">
-                List existing media
+              <nuxt-link :to="{ name: 'concepts-list' }">
+                List concepts
               </nuxt-link>
             </div>
           </v-card-text>

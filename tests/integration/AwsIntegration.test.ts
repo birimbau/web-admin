@@ -113,7 +113,7 @@ describe('tests.integration.app.api.aws.AwsClient', () => {
     const file = fs.readFileSync(__filename);
 
     it('Uploads the file', async () => {
-      const namespace = 'medias';
+      const namespace = 'fragments';
       const uuid = 'uuid1';
       const metadata = { ext: 'ts' };
 

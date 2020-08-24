@@ -1,9 +1,9 @@
 /// <reference types="cypress" />
 
 import moment from 'moment';
-import { concepts, medias, projects } from '../../../../../tests/mocks/models';
+import { concepts, fragments, projects } from '../../../../../tests/mocks/models';
 
-context('/media/detail/:uuid', () => {
+context('/concepts/detail/:uuid', () => {
   const today = moment().format('YYYY-MM-DD');
   const [year, month, day] = today.split('-').map(Number);
 
@@ -23,7 +23,7 @@ context('/media/detail/:uuid', () => {
       featured: false,
     };
 
-    const media: any = {
+    const fragment: any = {
       storage: 'FREQUENT_ACCESS',
       role: 'PREVIEW',
     };
@@ -34,20 +34,20 @@ context('/media/detail/:uuid', () => {
       cy.route('POST', '/api/concepts', {}).as('concepts/post');
       cy.route('DELETE', '/api/concepts/**', {}).as('concepts/delete');
 
-      cy.route('GET', '/api/medias', {}).as('medias/get');
-      cy.route('POST', '/api/medias/**/upload', {}).as('medias/upload');
-      cy.route('POST', '/api/medias', {}).as('medias/post');
-      cy.route('DELETE', '/api/medias/**', {}).as('medias/delete');
+      cy.route('GET', '/api/fragments', {}).as('fragments/get');
+      cy.route('POST', '/api/fragments/**/upload', {}).as('fragments/upload');
+      cy.route('POST', '/api/fragments', {}).as('fragments/post');
+      cy.route('DELETE', '/api/fragments/**', {}).as('fragments/delete');
 
       cy.route('GET', '/api/projects', projects.valid).as('projects/get');
 
-      cy.visit('/media/detail');
+      cy.visit('/concepts/detail');
     });
 
     it('Displays a valid page', () => {
       cy.wait('@projects/get');
 
-      cy.get('[cy-target-name="media__card"]')
+      cy.get('[cy-target-name="fragment__card"]')
         .should('not.exist');
 
       cy.get('[name="concept__name"]')
@@ -106,7 +106,7 @@ context('/media/detail/:uuid', () => {
         .then((xhr: any) => {
           expect(xhr.request.body).to.deep.contain(concept);
           concept.uuid = xhr.request.body.uuid;
-          media.concept = concept.uuid;
+          fragment.concept = concept.uuid;
         });
 
       cy.get('#concept__file')
@@ -115,33 +115,33 @@ context('/media/detail/:uuid', () => {
         .trigger('change', { force: true })
         .should('have.value', '');
 
-      cy.get('[cy-target-name="media__card"]');
+      cy.get('[cy-target-name="fragment__card"]');
 
-      cy.get('[data-cy="media__download"]')
+      cy.get('[data-cy="fragment__download"]')
         .should('not.exist');
 
-      cy.get('[data-cy="media__remove"]')
+      cy.get('[data-cy="fragment__remove"]')
         .should('not.exist');
 
-      cy.get('[data-cy="media__upload"]')
+      cy.get('[data-cy="fragment__upload"]')
         .click();
 
-      cy.wait('@medias/post')
+      cy.wait('@fragments/post')
         .then((xhr: any) => {
-          expect(xhr.request.body).to.contain(media);
-          media.uuid = xhr.request.body.uuid;
+          expect(xhr.request.body).to.contain(fragment);
+          fragment.uuid = xhr.request.body.uuid;
         });
 
-      cy.wait('@medias/upload');
+      cy.wait('@fragments/upload');
 
-      cy.get('[data-cy="media__download"]');
+      cy.get('[data-cy="fragment__download"]');
 
-      cy.get('[data-cy="media__remove"]')
+      cy.get('[data-cy="fragment__remove"]')
         .click();
 
-      cy.wait('@medias/delete');
+      cy.wait('@fragments/delete');
 
-      cy.get('[cy-target-name="media__card"]')
+      cy.get('[cy-target-name="fragment__card"]')
         .should('not.exist');
 
       cy.get('[data-cy="concept__remove"]')
@@ -161,15 +161,15 @@ context('/media/detail/:uuid', () => {
       cy.server();
 
       cy.route('GET', `/api/concepts/${concept.uuid}`, concept).as('concepts/get');
-      cy.route('GET', '/api/medias', medias.valid).as('medias/get');
+      cy.route('GET', '/api/fragments', fragments.valid).as('fragments/get');
       cy.route('GET', '/api/projects', projects.valid).as('projects/get');
 
-      cy.visit(`/media/detail/${concept.uuid}`);
+      cy.visit(`/concepts/detail/${concept.uuid}`);
     });
 
     it('Displays a valid page', () => {
       cy.wait('@concepts/get');
-      cy.wait('@medias/get');
+      cy.wait('@fragments/get');
       cy.wait('@projects/get');
 
       cy.get('[name="concept__name"]').should('have.value', concept.name);

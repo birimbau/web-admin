@@ -1,6 +1,6 @@
 <template>
   <div class="img-container">
-    <img :src="media.data">
+    <img :src="fragment.data">
   </div>
 </template>
 
@@ -8,7 +8,7 @@
 import { defineComponent } from '@nuxtjs/composition-api';
 
 import { Concept } from '@/app/models/Concept';
-import { Media } from '@/app/models/Media';
+import { Fragment } from '@/app/models/Fragment';
 
 
 export default defineComponent({
@@ -18,8 +18,8 @@ export default defineComponent({
       type: Concept,
       required: true,
     },
-    media: {
-      type: Media,
+    fragment: {
+      type: Fragment,
       required: true,
     },
   },

@@ -142,8 +142,8 @@ export class AwsClient extends HttpClient {
 
   async uploadFile<T>(namespace: string, uuid: string, metadata: any, file: any): Promise<void> {
     const params = {
-      Bucket: 'photion--medias--dev',
-      Key: `media/${namespace}/${uuid}.${metadata.ext}`,
+      Bucket: 'photion--Fragments--dev',
+      Key: `Fragment/${namespace}/${uuid}.${metadata.ext}`,
       Body: file,
       ACL: this.getAcl(),
     };
@@ -153,8 +153,8 @@ export class AwsClient extends HttpClient {
 
   async deleteFile<T>(namespace: string, uuid: string, metadata: any): Promise<void> {
     const params = {
-      Bucket: 'photion--medias--dev',
-      Key: `media/${namespace}/${uuid}.${metadata.ext}`,
+      Bucket: 'photion--Fragments--dev',
+      Key: `Fragment/${namespace}/${uuid}.${metadata.ext}`,
     };
 
     await this.s3.deleteObject(params).promise();
@@ -162,8 +162,8 @@ export class AwsClient extends HttpClient {
 
   headFile<T>(namespace: string, uuid: string, metadata: any) {
     const params = {
-      Bucket: 'photion--medias--dev',
-      Key: `media/${namespace}/${uuid}.${metadata.ext}`,
+      Bucket: 'photion--Fragments--dev',
+      Key: `Fragment/${namespace}/${uuid}.${metadata.ext}`,
     };
 
     return this.s3.headObject(params).promise();

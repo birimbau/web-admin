@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1>Media</h1>
+    <h1>Fragment</h1>
     <div v-if="concepts.length">
-      <target v-for="concept in concepts" :id="concept.uuid" :key="concept.uuid" name="media__list__detail_link">
-        <nuxt-link :to="`/media/detail/${concept.uuid}`">
+      <target v-for="concept in concepts" :id="concept.uuid" :key="concept.uuid" name="concepts__list__detail_link">
+        <nuxt-link :to="`/concepts/detail/${concept.uuid}`">
           {{ concept.name }}
         </nuxt-link>
       </target>
