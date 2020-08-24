@@ -11,6 +11,20 @@ export interface ModelProps {
   uuid?: string;
 }
 
+/**
+ * File metadata
+ */
+export interface FileMetadata {
+  filename: string;
+  mime: string,
+  size: number;
+}
+
+/**
+ * Generates a model base class
+ * @param namespace
+ * @param fields
+ */
 export const modelize = <T extends ModelProps>(namespace: string, fields: Array<keyof Required<T>>) => {
   class Model {
     public static namespace = 'models';

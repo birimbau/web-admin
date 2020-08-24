@@ -67,17 +67,6 @@ import DatePicker from '@/components/atoms/DatePicker.vue';
 import FragmentCard from '@/components/organisms/fragments/FragmentCard.vue';
 import { SelectOption, toOption } from '@/app/utils';
 
-export const readFile = async (file: File): Promise<string> => {
-  const fr = new FileReader();
-
-  const url = await new Promise((resolve) => {
-    fr.onload = () => resolve(fr.result);
-    fr.readAsDataURL(file);
-  });
-
-  return url as string;
-};
-
 
 export default defineComponent({
 
@@ -94,8 +83,6 @@ export default defineComponent({
     const concept = ref(new Concept({ type: Concept.Type.IMAGE }));
     const fragments = ref<Fragment[]>([]);
     const projects = ref<SelectOption[]>([]);
-
-    const addFragment = (fragment: Fragment) => fragments.value.unshift(fragment);
 
     const removeFragment = (fragment: Fragment) => {
       const index = fragments.value.findIndex(el => el.uuid === fragment.uuid);
@@ -120,14 +107,10 @@ export default defineComponent({
 
     watch(file, async () => {
       if (file.value) {
-        const data = await readFile(file.value);
+        const fragment = new Fragment({ concept: concept.value.uuid });
+        await fragment.setFile(file.value);
 
-        const fragment = new Fragment({
-          concept: concept.value.uuid,
-          data,
-        });
-
-        addFragment(fragment);
+        fragments.value.unshift(fragment);
 
         file.value = null;
       }
@@ -139,7 +122,6 @@ export default defineComponent({
       fragments,
       projects,
       types: Object.values(Concept.Type).map(toOption),
-      addFragment,
       removeFragment,
     };
   },

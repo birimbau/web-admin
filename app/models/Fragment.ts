@@ -1,4 +1,4 @@
-import { modelize, ModelProps } from '@/app/models/Model';
+import { modelize, ModelProps, FileMetadata } from '@/app/models/Model';
 
 
 export enum FragmentRole {
@@ -17,13 +17,14 @@ export interface FragmentProps extends ModelProps {
   concept: string;
   role?: FragmentRole;
   storage?: FragmentStorage;
-  data: string;
+  data?: string;
+  meta?: FileMetadata;
 }
 
 export interface Fragment extends Required<FragmentProps> {}
 
 const namespace = 'fragments';
-const fields: Array<keyof FragmentProps> = ['uuid', 'concept', 'role', 'storage', 'data'];
+const fields: Array<keyof FragmentProps> = ['uuid', 'concept', 'role', 'storage', 'data', 'meta'];
 
 export class Fragment extends modelize<FragmentProps>(namespace, fields) {
   static Role = FragmentRole;
@@ -36,12 +37,32 @@ export class Fragment extends modelize<FragmentProps>(namespace, fields) {
     this.concept = props.concept;
     this.role = props.role ?? FragmentRole.PREVIEW;
     this.storage = props.storage ?? FragmentStorage.FREQUENT_ACCESS;
-    this.data = props.data;
+    this.data = props.data ?? '';
+    this.meta = props.meta ?? { filename: '', mime: '', size: 0 };
   }
 
-  async upload(file: any = null) {
+  async setFile(file: File) {
+    const fr = new FileReader();
+
+    this.file = file;
+
+    this.meta.filename = file.name;
+    this.meta.size = file.size;
+    this.meta.mime = file.type;
+
+    this.data = await new Promise((resolve) => {
+      fr.onload = () => resolve(fr.result as string);
+      fr.readAsDataURL(file);
+    });
+
+
+    return this.data;
+  }
+
+  async upload(file: File | null = null) {
     // save for the latest metadata
     await this.save();
-    await this.client.uploadFile(namespace, this.uuid, this.$values, file || this.file);
+
+    await this.client.uploadFile(namespace, this.uuid, this.meta, file || this.file);
   }
 }

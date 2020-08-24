@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 import { AbstractClient } from '@/app/api/AbstractClient';
+import { FileMetadata } from '@/app/models/Model';
 
 
 export class HttpClient extends AbstractClient {
@@ -61,11 +62,11 @@ export class HttpClient extends AbstractClient {
     this.processResponse(await this.client.delete(`/api/${namespace}/${uuid}`));
   }
 
-  async uploadFile<T>(namespace: string, uuid: string, metadata: any, file: any): Promise<void> {
+  async uploadFile<T>(namespace: string, uuid: string, metadata: Required<FileMetadata>, file: any): Promise<void> {
     this.processResponse(await this.client.post(`/api/${namespace}/${uuid}/upload`, { metadata, file }));
   }
 
-  async deleteFile<T>(namespace: string, uuid: string, _metadata: any): Promise<void> {
+  async deleteFile<T>(namespace: string, uuid: string, _metadata: Required<FileMetadata>): Promise<void> {
     this.processResponse(await this.client.delete(`/api/${namespace}/${uuid}/upload`));
   }
 }

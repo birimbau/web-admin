@@ -2,6 +2,7 @@ import aws from 'aws-sdk';
 
 
 import { HttpClient } from '@/app/api/HttpClient';
+import { FileMetadata } from '@/app/models/Model';
 
 
 export class AwsClient extends HttpClient {
@@ -18,6 +19,13 @@ export class AwsClient extends HttpClient {
         S: uuid,
       },
     };
+  }
+
+  getBucket() {
+    const stage = 'dev';
+    const bucket = `photion--concepts--${stage}`;
+
+    return bucket;
   }
 
   getAcl() {
@@ -140,10 +148,10 @@ export class AwsClient extends HttpClient {
     await this.dynamo.deleteItem(params).promise();
   }
 
-  async uploadFile<T>(namespace: string, uuid: string, metadata: any, file: any): Promise<void> {
+  async uploadFile<T>(namespace: string, uuid: string, meta: Required<FileMetadata>, file: any): Promise<void> {
     const params = {
-      Bucket: 'photion--Fragments--dev',
-      Key: `Fragment/${namespace}/${uuid}.${metadata.ext}`,
+      Bucket: this.getBucket(),
+      Key: this.getFileKey(namespace, uuid, meta),
       Body: file,
       ACL: this.getAcl(),
     };
@@ -151,19 +159,19 @@ export class AwsClient extends HttpClient {
     await this.s3.putObject(params).promise();
   }
 
-  async deleteFile<T>(namespace: string, uuid: string, metadata: any): Promise<void> {
+  async deleteFile<T>(namespace: string, uuid: string, meta: Required<FileMetadata>): Promise<void> {
     const params = {
-      Bucket: 'photion--Fragments--dev',
-      Key: `Fragment/${namespace}/${uuid}.${metadata.ext}`,
+      Bucket: this.getBucket(),
+      Key: this.getFileKey(namespace, uuid, meta),
     };
 
     await this.s3.deleteObject(params).promise();
   }
 
-  headFile<T>(namespace: string, uuid: string, metadata: any) {
+  headFile<T>(namespace: string, uuid: string, meta: Required<FileMetadata>) {
     const params = {
-      Bucket: 'photion--Fragments--dev',
-      Key: `Fragment/${namespace}/${uuid}.${metadata.ext}`,
+      Bucket: this.getBucket(),
+      Key: this.getFileKey(namespace, uuid, meta),
     };
 
     return this.s3.headObject(params).promise();
