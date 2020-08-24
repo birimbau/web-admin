@@ -1,4 +1,5 @@
 {
+  "color": true,
   "diff": true,
   "extension": ["js", "ts"],
   "require": [
