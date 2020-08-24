@@ -31,7 +31,7 @@
     "types": [
       "@types/node",
       "@nuxt/types",
-      "jest"
+      "mocha"
     ]
   },
   "exclude": [

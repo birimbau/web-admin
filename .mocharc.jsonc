@@ -1,0 +1,10 @@
+{
+  "diff": true,
+  "extension": ["js", "ts"],
+  "require": [
+    "ts-node/register",
+    "tsconfig-paths/register"
+  ],
+  "watchFiles": ["**/*.ts"],
+  "watchIgnore": ["cypress", "node_modules"]
+}
