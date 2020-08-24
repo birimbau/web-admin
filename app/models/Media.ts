@@ -42,6 +42,6 @@ export class Media extends modelize<MediaProps>(namespace, fields) {
   async upload(file: any = null) {
     // save for the latest metadata
     await this.save();
-    await this.client.upload(namespace, this.uuid, this.$values, file || this.file);
+    await this.client.uploadFile(namespace, this.uuid, this.$values, file || this.file);
   }
 }

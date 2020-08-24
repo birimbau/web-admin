@@ -1,5 +1,6 @@
 import { v4 } from 'uuid';
 
+import { Http404 } from '@/app/errors/http/Http404';
 import { client } from '@/hooks/api';
 
 
@@ -36,14 +37,17 @@ export const modelize = <T extends ModelProps>(namespace: string, fields: Array<
       return Object.fromEntries(entries);
     }
 
-    static async retrieve<Y>(this: new (props: T) => Y | null, uuid: string) {
+    static async retrieve<Y>(this: new (props: T) => Y, uuid: string): Promise<Y> {
       const values = await client.value.retrieve<T>(namespace, uuid);
 
-      if (values) {
-        return new this(values);
+      if (!values) {
+        const errorCode = `${namespace}__not_found`;
+        const message = `Could not find any ${namespace} with UUID: '${uuid}'`;
+
+        throw new Http404(errorCode, message);
       }
 
-      return null;
+      return new this(values);
     }
 
     static async list<Y>(this: new (props: T) => Y) {

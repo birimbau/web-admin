@@ -64,7 +64,7 @@ export default {
         // Set the source maps
         // They are different to allow VS Code debugging
         // config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map';
-        config.devtool = '#source-map';
+        config.devtool = 'source-map';
       }
     },
   },
