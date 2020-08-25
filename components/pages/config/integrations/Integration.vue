@@ -3,7 +3,6 @@
     <v-sheet
       class="pa-5 ma-5 config__integrations__integration"
       :elevation="10"
-      height="90"
       @click="onclick"
     >
       <v-row>

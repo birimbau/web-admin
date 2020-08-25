@@ -5,13 +5,17 @@
         <v-col cols="4">
           <component :is="preview" :concept="concept" :fragment="fragment" />
         </v-col>
-        <v-col col="8">
+        <v-col cols="8">
           <div>
-            <v-select v-model="fragment.role" label="Role" :items="roles" />
-            <v-select v-model="fragment.storage" label="Storage" :items="storages" />
+            <v-text-field disabled :value="fragment.meta.filename" label="Original Filename" />
+            <v-select v-model="fragment.meta.storage" label="Storage" :items="storages" :disabled="fragment.created" />
+            <v-text-field v-model="fragment.notes" label="Notes (Optional)" />
           </div>
           <div v-if="fragment.created">
-            <v-btn text small color="primary" data-cy="fragment__download">
+            <v-btn text small color="primary" data-cy="fragment__download" @click="fragment.save()">
+              Save
+            </v-btn>
+            <v-btn text small color="success" data-cy="fragment__download">
               Download
             </v-btn>
             <v-btn text small color="error" data-cy="fragment__remove" @click="removeFragment">
@@ -34,6 +38,7 @@ import { defineComponent, computed } from '@vue/composition-api';
 
 import { Concept } from '@/app/models/Concept';
 import { Fragment } from '@/app/models/Fragment';
+import { FileStorage } from '@/app/models/Model';
 import { toOption } from '@/app/utils';
 import Target from '@/components/atoms/Target.vue';
 import ImagePreview from '@/components/organisms/fragments/ImagePreview.vue';
@@ -67,8 +72,7 @@ export default defineComponent({
   },
 
   setup(props, { emit }) {
-    const roles = Object.values(Fragment.Role).map(toOption);
-    const storages = Object.values(Fragment.Storage).map(toOption);
+    const storages = Object.values(FileStorage).map(toOption);
     const preview = computed(() => Component[props.concept.type]);
 
     const removeFragment = async () => {
@@ -77,7 +81,6 @@ export default defineComponent({
     };
 
     return {
-      roles,
       storages,
       preview,
       removeFragment,
@@ -85,3 +88,11 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>

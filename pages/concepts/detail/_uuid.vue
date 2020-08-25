@@ -35,6 +35,9 @@
             </v-col>
           </v-row>
           <div v-if="concept.created">
+            <v-btn small text color="primary" data-cy="concept__remove" @click="concept.save()">
+              Save Concept
+            </v-btn>
             <v-btn small text color="error" data-cy="concept__remove" @click="concept.remove()">
               Delete Concept
             </v-btn>

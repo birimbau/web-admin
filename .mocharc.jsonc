@@ -5,7 +5,7 @@
   "require": [
     "ts-node/register",
     "tsconfig-paths/register",
-    "./tests/setup.ts"
+    "./tests/setup.js"
   ],
   "watchFiles": ["**/*.ts"],
   "watchIgnore": ["cypress", "node_modules"]

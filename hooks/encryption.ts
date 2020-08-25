@@ -1,6 +1,5 @@
 import { ref } from '@vue/composition-api';
-import { LocalStorageHandler } from 'keylocal/dist/storage/localStorage';
-import { PasswordHandler } from 'keylocal/dist/strategy/pgp/password';
+import { LocalStorageHandler, PasswordHandler } from 'keylocal';
 
 
 export const key = 'PHOTION_SECRETS_STORAGE_KEY';

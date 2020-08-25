@@ -11,6 +11,12 @@ export interface ModelProps {
   uuid?: string;
 }
 
+export enum FileStorage {
+  PREVIEW = 'PREVIEW',
+  FULL_QUALITY = 'FULL_QUALITY',
+  RAW = 'RAW',
+}
+
 /**
  * File metadata
  */
@@ -18,6 +24,7 @@ export interface FileMetadata {
   filename: string;
   mime: string,
   size: number;
+  storage: FileStorage;
 }
 
 /**
