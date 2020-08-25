@@ -19,28 +19,24 @@
         </div>
       </v-col>
       <v-col cols="12" sm="6">
-        <component :is="service" v-if="service" />
+        <component :is="clientName" v-if="clientName" />
       </v-col>
     </v-row>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Ref } from '@vue/composition-api';
+import { defineComponent } from '@vue/composition-api';
 
 import Integration from '@/components/pages/config/integrations/Integration.vue';
 import aws from '@/components/pages/config/integrations/aws.vue';
 import gcp from '@/components/pages/config/integrations/gcp.vue';
 import googleDrive from '@/components/pages/config/integrations/googleDrive.vue';
+import { clientName } from '@/hooks/api';
 import { password } from '@/hooks/encryption';
 import { secrets } from '@/hooks/secrets';
 import { services } from '@/app/models/services';
 
-export enum Services {
-  AWS = 'aws',
-  GCP = 'gcp',
-  GOOGLE_DRIVE = 'googleDrive',
-}
 
 export default defineComponent({
 
@@ -52,15 +48,14 @@ export default defineComponent({
   },
 
   setup() {
-    const service: Ref<Services | ''> = ref('');
-
-    const onServiceClick = (slug: Services) => {
-      service.value = slug;
+    const onServiceClick = (slug: string) => {
+      clientName.value = slug;
+      window.localStorage.setItem('PHOTION_INTEGRATION', slug);
     };
 
     return {
       secrets,
-      service,
+      clientName,
       services,
       password,
       onServiceClick,

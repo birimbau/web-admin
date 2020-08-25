@@ -37,7 +37,7 @@ const getFileReader = () => {
   return fr;
 };
 
-describe('tests.unit.app.models.Fragment', () => {
+describe('unit.app.models.Fragment', () => {
   afterEach(() => sinon.restore());
 
   describe('.constructor', () => {

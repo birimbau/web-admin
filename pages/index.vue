@@ -41,7 +41,7 @@
               Concepts
             </h3>
             <div>
-              <nuxt-link :to="{ name: 'concepts-detail-id' }">
+              <nuxt-link :to="{ name: 'concepts-detail-uuid' }">
                 Add new concepts
               </nuxt-link>
             </div>

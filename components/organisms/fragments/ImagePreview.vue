@@ -1,6 +1,6 @@
 <template>
   <div class="img-container">
-    <img :src="fragment.data">
+    <img :src="fragment.url">
   </div>
 </template>
 

@@ -10,6 +10,10 @@ export abstract class AbstractClient {
   abstract async uploadFile<T>(namespace: string, uuid: string, metadata: Required<FileMetadata>, file: any): Promise<void>
   abstract async deleteFile<T>(namespace: string, uuid: string, metadata: Required<FileMetadata>): Promise<void>
 
+  get prefix() {
+    return '/';
+  }
+
   /**
    * Returns the file key
    * @param namespace
@@ -21,5 +25,17 @@ export abstract class AbstractClient {
     const key = `media/${namespace}/${uuid}.${ext}`;
 
     return key;
+  }
+
+  /**
+   * Returns file URL
+   * @param namespace
+   * @param uuid
+   * @param meta
+   */
+  getFileUrl(namespace: string, uuid: string, meta: Required<FileMetadata>): string {
+    const key = this.getFileKey(namespace, uuid, meta);
+
+    return `${this.prefix}${key}`;
   }
 }

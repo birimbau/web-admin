@@ -1,11 +1,18 @@
 import aws from 'aws-sdk';
 
-
 import { HttpClient } from '@/app/api/HttpClient';
-import { FileMetadata } from '@/app/models/Model';
+import { FileMetadata, FileStorage } from '@/app/models/Model';
+import { secrets } from '@/hooks/secrets';
 
 
 export class AwsClient extends HttpClient {
+  get prefix() {
+    const bucket = this.getBucket();
+    const region = secrets.values.AWS_REGION.value;
+
+    return `https://${bucket}.s3-${region}.amazonaws.com/`;
+  }
+
   getTable(namespace: string): string {
     const stage = 'dev';
     const table = `photion--${namespace}--${stage}`;
@@ -28,13 +35,36 @@ export class AwsClient extends HttpClient {
     return bucket;
   }
 
-  getAcl() {
-    return 'public-read';
+  getStorageClass(meta: FileMetadata) {
+    switch (meta.storage) {
+    case FileStorage.PREVIEW:
+      return 'STANDARD';
+    case FileStorage.FULL_QUALITY:
+      return 'STANDARD_IA';
+    case FileStorage.RAW:
+      return 'DEEP_ARCHIVE';
+    default:
+      throw new Error(`Unknown storage class for: '${meta.storage}'`);
+    }
+  }
+
+  getAcl(meta: FileMetadata) {
+    switch (meta.storage) {
+    case FileStorage.PREVIEW:
+      return 'public-read';
+    case FileStorage.FULL_QUALITY:
+    case FileStorage.RAW:
+      return 'private';
+    default:
+      throw new Error(`Unknown acl for: '${meta.storage}'`);
+    }
   }
 
   get s3(): aws.S3 {
     const params = {
-      region: 'eu-west-1',
+      region: secrets.values.AWS_REGION.value,
+      accessKeyId: secrets.values.AWS_ACCESS_KEY_ID.value,
+      secretAccessKey: secrets.values.AWS_SECRET_ACCESS_KEY.value,
     };
 
     return new aws.S3(params);
@@ -43,9 +73,9 @@ export class AwsClient extends HttpClient {
   get dynamo(): aws.DynamoDB {
     const params = {
       apiVersion: '2012-08-10',
-      region: 'eu-west-1',
-      // secretAccessKey: secrets.values.AWS_ACCESS_KEY.value,
-      // accessKeyId: secrets.values.AWS_SECRET_KEY.value,
+      region: secrets.values.AWS_REGION.value,
+      accessKeyId: secrets.values.AWS_ACCESS_KEY_ID.value,
+      secretAccessKey: secrets.values.AWS_SECRET_ACCESS_KEY.value,
     };
 
     return new aws.DynamoDB(params);
@@ -58,11 +88,11 @@ export class AwsClient extends HttpClient {
 
     switch (value.constructor.name) {
     case 'Boolean':
-      return { B: value };
+      return { BOOL: value };
     case 'String':
       return { S: value };
     case 'Number':
-      return { N: value };
+      return { N: String(value) };
     case 'Array':
       return { L: value.map((el: any) => this.toField(el)) };
     case 'Object':
@@ -72,8 +102,19 @@ export class AwsClient extends HttpClient {
     }
   }
 
-  fromField(value: { [key: string]: any }): any {
-    return Object.values(value)[0];
+  fromField(field: { [key: string]: any }): any {
+    const [[key, value]] = Object.entries(field);
+
+    switch (key) {
+    case 'N':
+      return Number(value);
+    case 'M':
+      return this.fromQuery(value);
+    case 'L':
+      return value.map((sub: { [key: string]: any }) => this.fromField(sub));
+    default:
+      return value;
+    }
   }
 
   toQuery<T>(values: T) {
@@ -153,7 +194,9 @@ export class AwsClient extends HttpClient {
       Bucket: this.getBucket(),
       Key: this.getFileKey(namespace, uuid, meta),
       Body: file,
-      ACL: this.getAcl(),
+      ACL: this.getAcl(meta),
+      StorageClass: this.getStorageClass(meta),
+      ContentType: meta.mime,
     };
 
     await this.s3.putObject(params).promise();
