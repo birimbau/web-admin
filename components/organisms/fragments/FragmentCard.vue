@@ -12,7 +12,10 @@
             <v-text-field v-model="fragment.notes" label="Notes (Optional)" />
           </div>
           <div v-if="fragment.created">
-            <v-btn text small color="primary" data-cy="fragment__download">
+            <v-btn text small color="primary" data-cy="fragment__download" @click="fragment.save()">
+              Save
+            </v-btn>
+            <v-btn text small color="success" data-cy="fragment__download">
               Download
             </v-btn>
             <v-btn text small color="error" data-cy="fragment__remove" @click="removeFragment">
