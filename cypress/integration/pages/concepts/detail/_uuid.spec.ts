@@ -24,8 +24,13 @@ context('/concepts/detail/:uuid', () => {
     };
 
     const fragment: any = {
-      storage: 'FREQUENT_ACCESS',
-      role: 'PREVIEW',
+      meta: {
+        filename: 'assets/alinatrifan.sheffield.jpg',
+        mime: '',
+        size: 201256,
+        storage: 'PREVIEW',
+      },
+      notes: 'Some Note...',
     };
 
     beforeEach(() => {
@@ -104,18 +109,21 @@ context('/concepts/detail/:uuid', () => {
 
       cy.wait('@concepts/post')
         .then((xhr: any) => {
-          expect(xhr.request.body).to.deep.contain(concept);
           concept.uuid = xhr.request.body.uuid;
           fragment.concept = concept.uuid;
+          expect(xhr.request.body).to.deep.equal(concept);
         });
 
       cy.get('#concept__file')
-        .attachFile('assets/alinatrifan.sheffield.jpg', 'image/jpg')
+        .attachFile('assets/alinatrifan.sheffield.jpg', 'image/jpeg')
         .should('have.value', 'C:\\fakepath\\assets/alinatrifan.sheffield.jpg')
         .trigger('change', { force: true })
         .should('have.value', '');
 
       cy.get('[cy-target-name="fragment__card"]');
+
+      cy.get('[data-cy="fragment__notes"]')
+        .type(fragment.notes);
 
       cy.get('[data-cy="fragment__download"]')
         .should('not.exist');
@@ -128,8 +136,8 @@ context('/concepts/detail/:uuid', () => {
 
       cy.wait('@fragments/post')
         .then((xhr: any) => {
-          expect(xhr.request.body).to.contain(fragment);
           fragment.uuid = xhr.request.body.uuid;
+          expect(xhr.request.body).to.be.deep.equal(fragment);
         });
 
       cy.wait('@fragments/upload');

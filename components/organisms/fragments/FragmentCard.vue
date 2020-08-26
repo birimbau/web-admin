@@ -9,7 +9,7 @@
           <div>
             <v-text-field disabled :value="fragment.meta.filename" label="Original Filename" />
             <v-select v-model="fragment.meta.storage" label="Storage" :items="storages" :disabled="fragment.created" />
-            <v-text-field v-model="fragment.notes" label="Notes (Optional)" />
+            <v-text-field v-model="fragment.notes" label="Notes (Optional)" data-cy="fragment__notes" />
           </div>
           <div v-if="fragment.created">
             <v-btn text small color="primary" data-cy="fragment__download" @click="fragment.save()">
