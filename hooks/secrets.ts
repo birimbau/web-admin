@@ -10,6 +10,7 @@ export enum Secrets {
   GCP_API_SECRET = 'GCP_API_SECRET',
 }
 
+export const PHOTION_SESSION_CREDENTIALS = 'PHOTION_SESSION_CREDENTIALS';
 
 export const secrets = {
   values: {
@@ -26,55 +27,34 @@ export const secrets = {
 
   serialize: () => secrets.entries().map(([key, obj]) => [key, obj.value]),
 
-  save: async () => await handler.save({ password: password.value }, { secrets: secrets.serialize() }),
+  deserialize: (payload: { secrets: string[][] }) => {
+    payload.secrets.forEach(([key, value]) => {
+      const secret = secrets.values[key as Secrets];
+
+      if (secret) {
+        secret.value = value;
+      }
+    });
+  },
+
+  save: async () => {
+    const serialized = secrets.serialize();
+    window.sessionStorage.setItem(PHOTION_SESSION_CREDENTIALS, JSON.stringify(serialized));
+
+    await handler.save({ password: password.value }, { secrets: secrets.serialize() });
+  },
 
   load: async () => {
     const payload = await handler.load({ password: password.value }) as { secrets: string[][] };
+    window.sessionStorage.setItem(PHOTION_SESSION_CREDENTIALS, JSON.stringify(payload));
+    secrets.deserialize(payload);
+  },
 
-    if (payload && payload.secrets) {
-      payload.secrets.forEach(([key, value]) => {
-        const secret = secrets.values[key as Secrets];
+  init: () => {
+    const encoded = window.sessionStorage.getItem(PHOTION_SESSION_CREDENTIALS);
 
-        if (secret) {
-          secret.value = value;
-        }
-      });
+    if (encoded) {
+      secrets.deserialize(JSON.parse(encoded));
     }
   },
 };
-
-
-// export class SecretManager {
-//   values: {
-//     [key in Secrets]: Ref<string>
-//   };
-
-//   constructor() {
-//     this.values = {
-//       GCP_API_KEY: ref(''),
-//       GCP_API_SECRET: ref(''),
-//     };
-//   }
-
-//   get entries() {
-//     return Object.entries(this.values);
-//   }
-
-//   get list() {
-//     return Object.values(this.values);
-//   }
-
-//   serialize() {
-//     return this.entries.map(([key, obj]) => [key, obj.value]);
-//   }
-
-//   async save() {
-//     const payload = { secrets: this.serialize() };
-//     await handler.save({ password: password.value }, payload);
-//   }
-
-//   async load() {
-//   }
-// }
-
-// export const secrets = new SecretManager();

@@ -2,13 +2,25 @@ import aws from 'aws-sdk';
 
 import { HttpClient } from '@/app/api/HttpClient';
 import { FileMetadata, FileStorage } from '@/app/models/Model';
-import { secrets } from '@/hooks/secrets';
 
+
+export interface AwsCredentials {
+  region: string;
+  accessKeyId: string;
+  secretAccessKey: string;
+}
 
 export class AwsClient extends HttpClient {
+  credentials: AwsCredentials;
+
+  constructor(credentials: AwsCredentials) {
+    super();
+    this.credentials = credentials;
+  }
+
   get prefix() {
     const bucket = this.getBucket();
-    const region = secrets.values.AWS_REGION.value;
+    const region = this.credentials.region;
 
     return `https://${bucket}.s3-${region}.amazonaws.com/`;
   }
@@ -62,9 +74,7 @@ export class AwsClient extends HttpClient {
 
   get s3(): aws.S3 {
     const params = {
-      region: secrets.values.AWS_REGION.value,
-      accessKeyId: secrets.values.AWS_ACCESS_KEY_ID.value,
-      secretAccessKey: secrets.values.AWS_SECRET_ACCESS_KEY.value,
+      ...this.credentials,
     };
 
     return new aws.S3(params);
@@ -73,9 +83,7 @@ export class AwsClient extends HttpClient {
   get dynamo(): aws.DynamoDB {
     const params = {
       apiVersion: '2012-08-10',
-      region: secrets.values.AWS_REGION.value,
-      accessKeyId: secrets.values.AWS_ACCESS_KEY_ID.value,
-      secretAccessKey: secrets.values.AWS_SECRET_ACCESS_KEY.value,
+      ...this.credentials,
     };
 
     return new aws.DynamoDB(params);
