@@ -2,14 +2,8 @@
 import sinon from 'sinon';
 import { expect } from 'chai';
 
-import { AwsClient } from '@/app/api/aws/AwsClient';
+import { getAwsClient } from '@/tests/utils/aws';
 
-
-const getInstance = () => {
-  const client = new AwsClient();
-
-  return { client };
-};
 
 const BOOLEAN = [
   { BOOL: true },
@@ -92,7 +86,7 @@ describe('unit.app.api.aws.AwsClient', () => {
 
   describe('.constructor', () => {
     it('Creates a Fragment', () => {
-      const { client } = getInstance();
+      const { client } = getAwsClient();
       expect(client.constructor.name).to.be.equal('AwsClient');
     });
   });
@@ -100,7 +94,7 @@ describe('unit.app.api.aws.AwsClient', () => {
   describe('.fromField', () => {
     Object.entries(fields).forEach(([key, field]) => {
       it(`Converts: ${key}`, () => {
-        const { client } = getInstance();
+        const { client } = getAwsClient();
         const from = field[0] as { [key: string]: any };
         const expected = field[1];
 
@@ -112,7 +106,7 @@ describe('unit.app.api.aws.AwsClient', () => {
   describe('.toField', () => {
     Object.entries(fields).forEach(([key, field]) => {
       it(`Converts: ${key}`, () => {
-        const { client } = getInstance();
+        const { client } = getAwsClient();
         const from = field[1];
         const expected = field[0];
 

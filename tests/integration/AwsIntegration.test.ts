@@ -2,8 +2,8 @@ import * as fs from 'fs';
 
 import { expect } from 'chai';
 
-import { AwsClient } from '@/app/api/aws/AwsClient';
-
+import { FileStorage } from '@/app/models/Model';
+import { getAwsClient } from '@/tests/utils/aws';
 
 describe('tests.integration.app.api.aws.AwsClient', () => {
   const context = {
@@ -12,7 +12,7 @@ describe('tests.integration.app.api.aws.AwsClient', () => {
   };
 
   afterEach(async () => {
-    const client = new AwsClient();
+    const { client } = getAwsClient();
 
     await Promise.all(
       context.refs.map((ref: any) => client.remove(ref.namespace, ref.uuid)),
@@ -29,7 +29,7 @@ describe('tests.integration.app.api.aws.AwsClient', () => {
   describe('Handles queries', () => {
     it('Lists an empty table', async () => {
       const namespace = 'projects';
-      const client = new AwsClient();
+      const { client } = getAwsClient();
 
       const items = await client.list(namespace);
 
@@ -39,7 +39,7 @@ describe('tests.integration.app.api.aws.AwsClient', () => {
     it('Returns null when the item is not found', async () => {
       const namespace = 'projects';
       const uuid = 'fake-uuid';
-      const client = new AwsClient();
+      const { client } = getAwsClient();
 
       const item = await client.retrieve(namespace, uuid);
 
@@ -56,7 +56,7 @@ describe('tests.integration.app.api.aws.AwsClient', () => {
 
       context.refs.push({ namespace, uuid: project.uuid });
 
-      const client = new AwsClient();
+      const { client } = getAwsClient();
       await client.create(namespace, project);
 
       const item = await client.retrieve(namespace, project.uuid);
@@ -78,7 +78,7 @@ describe('tests.integration.app.api.aws.AwsClient', () => {
 
       context.refs.push({ namespace, uuid: project.uuid });
 
-      const client = new AwsClient();
+      const { client } = getAwsClient();
 
       await client.create(namespace, project);
       await client.update(namespace, project.uuid, updated);
@@ -99,7 +99,7 @@ describe('tests.integration.app.api.aws.AwsClient', () => {
 
       context.refs.push({ namespace, uuid: project.uuid });
 
-      const client = new AwsClient();
+      const { client } = getAwsClient();
       await client.create(namespace, project);
       await client.remove(namespace, project.uuid);
 
@@ -115,9 +115,9 @@ describe('tests.integration.app.api.aws.AwsClient', () => {
     it('Uploads the file', async () => {
       const namespace = 'fragments';
       const uuid = 'uuid1';
-      const metadata = { filename: 'filename', size: 1024, mime: 'application/javascript' };
+      const metadata = { filename: 'filename', size: 1024, mime: 'application/javascript', storage: FileStorage.PREVIEW };
 
-      const client = new AwsClient();
+      const { client } = getAwsClient();
       context.files.push({ namespace, uuid, metadata });
 
       await client.uploadFile(namespace, uuid, metadata, file);
