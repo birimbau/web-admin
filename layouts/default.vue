@@ -1,9 +1,7 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" fixed app />
     <v-app-bar fixed app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <nuxt-link to="/" class="text-h5" v-text="title" />
+      <nuxt-link to="/" class="text-h5 title" v-text="title" />
       <v-spacer />
     </v-app-bar>
     <v-main>
@@ -14,7 +12,7 @@
     <v-footer :absolute="false" app class="text-caption">
       <span>Photion Admin. Released under GNU Affero 3.0</span>
       <v-spacer />
-      <a href="https://github.com/photion/Admin" target="_blank">Source code available on GitHub</a>
+      <a href="https://github.com/photion/web-admin" target="_blank">Source code available on GitHub</a>
     </v-footer>
   </v-app>
 </template>
@@ -35,3 +33,10 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.title {
+  text-decoration: none;
+  color: black;
+}
+</style>
