@@ -54,7 +54,7 @@ export const secrets = {
     const encoded = window.sessionStorage.getItem(PHOTION_SESSION_CREDENTIALS);
 
     if (encoded) {
-      secrets.deserialize(JSON.parse(encoded));
+      secrets.deserialize({ secrets: JSON.parse(encoded) });
     }
   },
 };
