@@ -5,6 +5,7 @@ import { FileMetadata, FileStorage } from '@/app/models/Model';
 
 
 export interface AwsCredentials {
+  username: string;
   region: string;
   accessKeyId: string;
   secretAccessKey: string;
@@ -26,8 +27,7 @@ export class AwsClient extends HttpClient {
   }
 
   getTable(namespace: string): string {
-    const stage = 'dev';
-    const table = `photion--${namespace}--${stage}`;
+    const table = `photion--${namespace}--${this.credentials.username}`;
 
     return table;
   }
@@ -41,8 +41,7 @@ export class AwsClient extends HttpClient {
   }
 
   getBucket() {
-    const stage = 'dev';
-    const bucket = `photion--concepts--${stage}`;
+    const bucket = `photion--concepts--${this.credentials.username}`;
 
     return bucket;
   }

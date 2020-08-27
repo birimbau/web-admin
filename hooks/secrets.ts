@@ -8,6 +8,7 @@ export enum Secrets {
   AWS_SECRET_ACCESS_KEY = 'AWS_SECRET_ACCESS_KEY',
   GCP_API_KEY = 'GCP_API_KEY',
   GCP_API_SECRET = 'GCP_API_SECRET',
+  USERNAME = 'USERNAME',
 }
 
 export const PHOTION_SESSION_CREDENTIALS = 'PHOTION_SESSION_CREDENTIALS';
@@ -19,6 +20,7 @@ export const secrets = {
     AWS_SECRET_ACCESS_KEY: ref(''),
     GCP_API_KEY: ref(''),
     GCP_API_SECRET: ref(''),
+    USERNAME: ref(''),
   },
 
   entries: () => Object.entries(secrets.values),

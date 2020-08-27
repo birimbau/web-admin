@@ -17,6 +17,7 @@ export const clientName: Ref<string> = ref(window.localStorage.getItem('PHOTION_
 export const client = computed((): AbstractClient => {
   if (clientName.value === 'aws') {
     return new AwsClient({
+      username: secrets.values.USERNAME.value,
       region: secrets.values.AWS_REGION.value,
       accessKeyId: secrets.values.AWS_ACCESS_KEY_ID.value,
       secretAccessKey: secrets.values.AWS_SECRET_ACCESS_KEY.value,
