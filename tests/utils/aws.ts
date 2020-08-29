@@ -8,6 +8,7 @@ import { AwsClient } from '@/app/api/aws/AwsClient';
 export const getAwsClient = () => {
   const credentials = new aws.SharedIniFileCredentials({ profile: process.env.AWS_PROFILE });
   const config = {
+    username: process.env.PHOTION_USERNAME || 'dev',
     region: process.env.AWS_REGION || 'eu-west-1',
     accessKeyId: credentials.accessKeyId,
     secretAccessKey: credentials.secretAccessKey,

@@ -1,7 +1,9 @@
 <template>
   <div>
     <h3>Integrate with Google Drive</h3>
-    <div />
+    <div>
+      Not supported yet.
+    </div>
   </div>
 </template>
 

@@ -5,6 +5,9 @@
       <v-text-field v-model="secrets.values.GCP_API_KEY.value" label="Google Cloud Platform API Key" />
       <v-text-field v-model="secrets.values.GCP_API_SECRET.value" label="Google Cloud Platform API Secret" />
     </div>
+    <div>
+      Not supported yet.
+    </div>
   </div>
 </template>
 

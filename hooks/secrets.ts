@@ -1,5 +1,5 @@
 import { ref } from '@vue/composition-api';
-import { handler, password } from '@/hooks/encryption';
+import { handler, creds } from '@/hooks/encryption';
 
 
 export enum Secrets {
@@ -8,7 +8,6 @@ export enum Secrets {
   AWS_SECRET_ACCESS_KEY = 'AWS_SECRET_ACCESS_KEY',
   GCP_API_KEY = 'GCP_API_KEY',
   GCP_API_SECRET = 'GCP_API_SECRET',
-  USERNAME = 'USERNAME',
 }
 
 export const PHOTION_SESSION_CREDENTIALS = 'PHOTION_SESSION_CREDENTIALS';
@@ -20,7 +19,6 @@ export const secrets = {
     AWS_SECRET_ACCESS_KEY: ref(''),
     GCP_API_KEY: ref(''),
     GCP_API_SECRET: ref(''),
-    USERNAME: ref(''),
   },
 
   entries: () => Object.entries(secrets.values),
@@ -35,7 +33,10 @@ export const secrets = {
 
       if (secret) {
         secret.value = value;
+        return true;
       }
+
+      return false;
     });
   },
 
@@ -43,12 +44,12 @@ export const secrets = {
     const serialized = secrets.serialize();
     window.sessionStorage.setItem(PHOTION_SESSION_CREDENTIALS, JSON.stringify(serialized));
 
-    await handler.save({ password: password.value }, { secrets: secrets.serialize() });
+    await handler.save({ password: creds.value }, { secrets: secrets.serialize() });
   },
 
   load: async () => {
-    const payload = await handler.load({ password: password.value }) as { secrets: string[][] };
-    window.sessionStorage.setItem(PHOTION_SESSION_CREDENTIALS, JSON.stringify(payload));
+    const payload = await handler.load({ password: creds.value }) as { secrets: string[][] };
+    window.sessionStorage.setItem(PHOTION_SESSION_CREDENTIALS, JSON.stringify(payload.secrets));
     secrets.deserialize(payload);
   },
 
@@ -56,7 +57,9 @@ export const secrets = {
     const encoded = window.sessionStorage.getItem(PHOTION_SESSION_CREDENTIALS);
 
     if (encoded) {
-      secrets.deserialize({ secrets: JSON.parse(encoded) });
+      return secrets.deserialize({ secrets: JSON.parse(encoded) });
     }
+
+    return false;
   },
 };

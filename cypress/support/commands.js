@@ -43,3 +43,20 @@ Cypress.Commands.add('waitJson', (alias) => {
     return xhr.request.body;
   });
 });
+
+Cypress.Commands.add('clearIntegrations', () => {
+  window.sessionStorage.removeItem('PHOTION_USERNAME');
+  window.sessionStorage.removeItem('PHOTION_SESSION_CREDENTIALS');
+});
+
+
+Cypress.Commands.add('useHttp', () => {
+  window.sessionStorage.setItem('PHOTION_USERNAME', Cypress.env('USERNAME'));
+  window.localStorage.setItem('PHOTION_INTEGRATION', 'http');
+});
+
+Cypress.Commands.add('useAws', () => {
+  window.localStorage.setItem('PHOTION_INTEGRATION', 'aws');
+  window.sessionStorage.setItem('PHOTION_USERNAME', Cypress.env('USERNAME'));
+  window.sessionStorage.setItem('PHOTION_SESSION_CREDENTIALS', Cypress.env('SESSION_CREDENTIALS_AWS'));
+});
