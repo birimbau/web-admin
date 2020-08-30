@@ -9,7 +9,7 @@ import { secrets } from '@/app/state/secrets';
 import { user } from '@/app/state/user';
 
 
-class Service {
+export class Service {
   name: string;
   logo: string;
   slug: string;

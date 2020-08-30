@@ -33,11 +33,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api';
 
 import { aws, gcp, googleDrive } from '@/app/state/service';
-import Integration from '@/components/pages/config/integrations/Integration.vue';
+import Integration from '@/components/pages/services/Integration.vue';
 
 
 export default defineComponent({

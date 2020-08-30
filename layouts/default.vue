@@ -1,10 +1,15 @@
 <template>
   <v-app>
-    <div class="mt-5 mx-auto" style="max-width: 1000px">
+    <div class="mt-5 mx-auto photion-container">
       <header>
-        <h1 class="text-h2 mb-10">
-          Photion
-        </h1>
+        <nuxt-link to="/">
+          <h1 class="mb-10">
+            <span class="text-h2">
+              Photion
+            </span>
+            <span v-if="service" class="text-caption">with {{ service.name }}</span>
+          </h1>
+        </nuxt-link>
       </header>
       <v-main>
         <v-container>
@@ -21,14 +26,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@nuxtjs/composition-api';
+import { defineComponent, ref, onBeforeMount } from '@nuxtjs/composition-api';
+import { init } from '@/app/state/secrets';
+import { service } from '@/app/state/service';
+
 
 export default defineComponent({
 
   setup() {
     const title = ref('Photion Admin');
+
+    onBeforeMount(init);
+
     return {
       title,
+      service,
     };
   },
 });
@@ -38,5 +50,15 @@ export default defineComponent({
 .title {
   text-decoration: none;
   color: black;
+}
+
+a {
+  text-decoration: none;
+  color: black !important;
+}
+
+.photion-container {
+  max-width: 1000px;
+  width: 100%;
 }
 </style>

@@ -19,14 +19,18 @@
         </div>
         <div class="text-right">
           <div v-if="selected">
-            <v-btn small text color="error" @click="deselect">
-              Use another service
-            </v-btn>
+            <nuxt-link to="/services">
+              <v-btn small text color="error">
+                Use another service
+              </v-btn>
+            </nuxt-link>
           </div>
           <div v-else>
-            <v-btn small text color="primary" @click="select">
-              Select
-            </v-btn>
+            <nuxt-link :to="'/services/' + service.slug">
+              <v-btn small text color="primary">
+                Select
+              </v-btn>
+            </nuxt-link>
           </div>
         </div>
       </v-col>
@@ -35,9 +39,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent } from '@vue/composition-api';
 
-import { clientName } from '@/app/state/service';
 import { Service } from '@/app/models/services';
 import Target from '@/components/atoms/Target.vue';
 
@@ -52,33 +55,18 @@ export default defineComponent({
       type: Object as () => Service,
       required: true,
     },
-  },
-
-  setup(props, context) {
-    const selected = computed(() => props.service.slug === clientName.value);
-
-    const select = () => {
-      clientName.value = props.service.slug;
-      window.localStorage.setItem('PHOTION_INTEGRATION', props.service.slug);
-      context.emit('select', props.service.slug);
-    };
-
-    const deselect = () => {
-      clientName.value = '';
-      window.localStorage.removeItem('PHOTION_INTEGRATION');
-      context.emit('deselect', props.service.slug);
-    };
-
-    return {
-      selected,
-      select,
-      deselect,
-    };
+    selected: {
+      type: Boolean,
+      default: false,
+    },
   },
 });
 </script>
 
 <style scoped>
+a {
+  text-decoration: none;
+}
 .text-right {
   text-align: right;
 }

@@ -11,17 +11,22 @@
             <v-text-field v-model="user.name" label="Photion Username" />
             <v-text-field v-model="user.password" type="password" label="Encryption Password" />
           </div>
-          <div>
-            <component :is="service.slug" />
+          <div class="mb-5 pt-5">
+            <slot />
           </div>
-          <div>
+          <div v-if="preview">
+            <v-btn text color="error" disabled>
+              Coming Soon
+            </v-btn>
+          </div>
+          <div v-else>
             <v-btn text color="primary" @click="onContinue">
               Continue
             </v-btn>
           </div>
         </v-col>
         <v-col cols="6">
-          <integration :service="service" />
+          <integration :service="service" selected />
         </v-col>
       </v-row>
     </div>
@@ -34,26 +39,32 @@ import { defineComponent, useContext, watch, toRef } from '@nuxtjs/composition-a
 
 import { user } from '@/app/state/user';
 import { save, load } from '@/app/state/secrets';
-import { service } from '@/app/state/service';
-import Integration from '@/components/pages/config/integrations/Integration.vue';
-import aws from '@/components/pages/config/integrations/aws.vue';
-import gcp from '@/components/pages/config/integrations/gcp.vue';
-import googleDrive from '@/components/pages/config/integrations/googleDrive.vue';
+import { Service, clientName } from '@/app/state/service';
+import Integration from '@/components/pages/services/Integration.vue';
 
 
 export default defineComponent({
 
   components: {
     Integration,
-    aws,
-    gcp,
-    googleDrive,
   },
 
-  setup(_props) {
+  props: {
+    preview: {
+      type: Boolean,
+      default: false,
+    },
+    service: {
+      type: Object as () => Service,
+      required: true,
+    },
+  },
+
+  setup(props) {
     const { redirect } = useContext();
 
     const onContinue = () => {
+      clientName.value = props.service.slug;
       save();
       redirect('/');
     };
@@ -65,16 +76,13 @@ export default defineComponent({
       sessionStorage.setItem('PHOTION_USERNAME', user.name);
 
       try {
-        console.log('Loading');
         return await load();
       } catch (error) {
-        console.log(error);
         return error;
       }
     });
 
     return {
-      service,
       user,
       onContinue,
     };

@@ -1,20 +1,27 @@
 <template>
-  <div>
-    <h3>Integrate with Google Drive</h3>
+  <service-form :service="googleDrive" preview>
     <div>
-      Not supported yet.
+      No fields.
     </div>
-  </div>
+  </service-form>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api';
+
 import { secrets } from '@/app/state/secrets';
+import { googleDrive } from '@/app/state/service';
+import ServiceForm from '@/components/pages/services/ServiceForm.vue';
 
 export default defineComponent({
 
+  components: {
+    ServiceForm,
+  },
+
   setup() {
     return {
+      googleDrive,
       secrets,
     };
   },

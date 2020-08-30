@@ -49,8 +49,6 @@ export const save = async () => {
 export const load = async () => {
   const secrets = await handler.load({ password: encryptionKey.value });
 
-  console.log(secrets);
-
   window.sessionStorage.setItem(PHOTION_SESSION_CREDENTIALS, JSON.stringify(secrets));
 
   deserialize(secrets);
@@ -62,4 +60,6 @@ export const init = () => {
   if (encoded) {
     deserialize(JSON.parse(encoded));
   }
+
+  user.name = window.sessionStorage.getItem('PHOTION_USERNAME') || '';
 };
