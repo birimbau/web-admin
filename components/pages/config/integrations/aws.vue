@@ -1,16 +1,16 @@
 <template>
   <div>
     <div class="mt-5">
-      <v-text-field v-model="secrets.values.AWS_REGION.value" label="AWS Region" />
-      <v-text-field v-model="secrets.values.AWS_ACCESS_KEY_ID.value" label="AWS Access Key ID" />
-      <v-text-field v-model="secrets.values.AWS_SECRET_ACCESS_KEY.value" label="AWS Secret Access Key" />
+      <v-text-field v-model="secrets.aws.region" label="AWS Region" />
+      <v-text-field v-model="secrets.aws.accessKeyId" label="AWS Access Key ID" />
+      <v-text-field v-model="secrets.aws.secretAccessKey" label="AWS Secret Access Key" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api';
-import { secrets } from '@/hooks/secrets';
+import { secrets } from '@/app/state/secrets';
 
 export default defineComponent({
 

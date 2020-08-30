@@ -1,7 +1,7 @@
 import { v4 } from 'uuid';
 
 import { Http404 } from '@/app/errors/http/Http404';
-import { client } from '@/hooks/state';
+import { client } from '@/app/state/service';
 
 
 /**

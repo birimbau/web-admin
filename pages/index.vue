@@ -13,7 +13,7 @@ import { defineComponent, computed } from '@nuxtjs/composition-api';
 import Ready from '@/components/pages/start/steps/Ready.vue';
 import SelectService from '@/components/pages/start/steps/SelectService.vue';
 import SetCredentials from '@/components/pages/start/steps/SetCredentials.vue';
-import { clientName } from '@/hooks/state';
+import { clientName, ready } from '@/app/state/service';
 
 export default defineComponent({
 
@@ -29,7 +29,11 @@ export default defineComponent({
         return 'SelectService';
       }
 
-      return 'SetCredentials';
+      if (!ready.value) {
+        return 'SetCredentials';
+      }
+
+      return 'Ready';
     });
 
     return {

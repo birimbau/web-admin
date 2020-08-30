@@ -37,7 +37,7 @@
 <script lang="ts">
 import { defineComponent, computed } from '@vue/composition-api';
 
-import { clientName } from '@/hooks/state';
+import { clientName } from '@/app/state/service';
 import { Service } from '@/app/models/services';
 import Target from '@/components/atoms/Target.vue';
 

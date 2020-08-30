@@ -12,7 +12,7 @@
         </h2>
         <v-row>
           <v-col cols="4">
-            <integration :service="services.googleDrive" class="ml-0" />
+            <integration :service="googleDrive" class="ml-0" />
           </v-col>
         </v-row>
       </div>
@@ -22,10 +22,10 @@
         </h2>
         <v-row>
           <v-col cols="4">
-            <integration :service="services.aws" class="ml-0" />
+            <integration :service="aws" class="ml-0" />
           </v-col>
           <v-col cols="4">
-            <integration :service="services.gcp" class="ml-0" />
+            <integration :service="gcp" class="ml-0" />
           </v-col>
         </v-row>
       </div>
@@ -36,7 +36,7 @@
 <script>
 import { defineComponent } from '@nuxtjs/composition-api';
 
-import { services } from '@/hooks/state';
+import { aws, gcp, googleDrive } from '@/app/state/service';
 import Integration from '@/components/pages/config/integrations/Integration.vue';
 
 
@@ -48,7 +48,9 @@ export default defineComponent({
 
   setup() {
     return {
-      services,
+      aws,
+      gcp,
+      googleDrive,
     };
   },
 });

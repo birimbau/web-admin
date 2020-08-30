@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api';
-import { secrets } from '@/hooks/secrets';
+import { secrets } from '@/app/state/secrets';
 
 export default defineComponent({
 
