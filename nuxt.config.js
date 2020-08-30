@@ -66,6 +66,10 @@ export default {
         // config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map';
         config.devtool = 'source-map';
       }
+
+      config.devServer = {
+        clientLogLevel: 'none',
+      };
     },
   },
 
@@ -73,4 +77,5 @@ export default {
     port: 3000,
     host: '0.0.0.0',
   },
+
 };

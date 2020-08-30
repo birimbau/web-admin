@@ -1,66 +1,29 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col cols="12" sm="4">
-        <v-card outlined class="elevation-10">
-          <v-card-text>
-            <h3 class="mb-5">
-              Configuration
-            </h3>
-            <div>
-              <nuxt-link :to="{ name: 'config-owner' }">
-                About yourself
-              </nuxt-link>
-            </div>
-            <div>
-              <nuxt-link :to="{ name: 'config-integrations' }">
-                Integrations
-              </nuxt-link>
-            </div>
-          </v-card-text>
-        </v-card>
-      </v-col>
-      <v-col cols="12" sm="4">
-        <v-card outlined class="elevation-10">
-          <v-card-text>
-            <h3 class="mb-5">
-              Projects
-            </h3>
-            <div>
-              <nuxt-link :to="{ name: 'projects' }">
-                Create or edit projects
-              </nuxt-link>
-            </div>
-          </v-card-text>
-        </v-card>
-      </v-col>
-      <v-col cols="12" sm="4">
-        <v-card outlined class="elevation-10">
-          <v-card-text>
-            <h3 class="mb-5">
-              Concepts
-            </h3>
-            <div>
-              <nuxt-link :to="{ name: 'concepts-detail-uuid' }">
-                Add new concepts
-              </nuxt-link>
-            </div>
-            <div>
-              <nuxt-link :to="{ name: 'concepts-list' }">
-                List concepts
-              </nuxt-link>
-            </div>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+  <div>
+    <div>
+      <nuxt-link to="/services">
+        Pick a service
+      </nuxt-link>
+    </div>
+    <div v-if="ready">
+      <nuxt-link to="/concepts/list">
+        Media List
+      </nuxt-link>
+    </div>
+  </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from '@vue/composition-api';
+<script>
+import { defineComponent } from '@nuxtjs/composition-api';
+
+import { ready } from '@/app/state/service';
 
 export default defineComponent({
 
+  setup() {
+    return {
+      ready,
+    };
+  },
 });
 </script>

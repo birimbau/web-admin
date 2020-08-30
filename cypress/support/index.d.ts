@@ -10,5 +10,9 @@ declare namespace Cypress {
     */
    attachFile(path: string, mime: string): Chainable<Element>
    waitJson(alias: string): Chainable<Element>
+
+   clearIntegrations(): Chainable<Element>
+   useHttp(): Chainable<Element>
+   useAws(): Chainable<Element>
   }
 }
