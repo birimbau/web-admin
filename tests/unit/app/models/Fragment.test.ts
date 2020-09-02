@@ -1,7 +1,7 @@
 
 import sinon from 'sinon';
-import { expect } from 'chai';
 
+import '@/tests/setup';
 import { Fragment } from '@/app/models/Fragment';
 
 
@@ -43,7 +43,7 @@ describe('unit.app.models.Fragment', () => {
   describe('.constructor', () => {
     it('Creates a Fragment', () => {
       const { fragment } = getInstance();
-      expect(fragment.constructor.name).to.be.equal('Fragment');
+      expect(fragment.constructor.name).toEqual('Fragment');
     });
   });
 
@@ -54,8 +54,8 @@ describe('unit.app.models.Fragment', () => {
 
       await fragment.setFile(file);
 
-      expect(fr.readAsDataURL.called).to.be.equal(true);
-      expect(fragment.file).to.be.deep.equal(file);
+      expect(fr.readAsDataURL.called).toEqual(true);
+      expect(fragment.file).toEqual(file);
     });
 
     it('Sets the metadata', async () => {
@@ -64,9 +64,9 @@ describe('unit.app.models.Fragment', () => {
 
       await fragment.setFile(file);
 
-      expect(fragment.meta.filename).to.be.equal(file.name);
-      expect(fragment.meta.size).to.be.equal(file.size);
-      expect(fragment.meta.mime).to.be.equal(file.type);
+      expect(fragment.meta.filename).toEqual(file.name);
+      expect(fragment.meta.size).toEqual(file.size);
+      expect(fragment.meta.mime).toEqual(file.type);
     });
 
     it('Sets the data', async () => {
@@ -75,7 +75,7 @@ describe('unit.app.models.Fragment', () => {
 
       await fragment.setFile(file);
 
-      expect(fragment.data).to.be.equal('VALUE');
+      expect(fragment.data).toEqual('VALUE');
     });
   });
 });

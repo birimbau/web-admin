@@ -1,7 +1,7 @@
 
 import sinon from 'sinon';
-import { expect } from 'chai';
 
+import '@/tests/setup';
 import { getAwsClient } from '@/tests/utils/aws';
 
 
@@ -84,10 +84,10 @@ const fields = {
 describe('unit.app.api.aws.AwsClient', () => {
   afterEach(() => sinon.restore());
 
-  describe('.constructor', () => {
+  describe('.construc4tor', () => {
     it('Creates a Fragment', () => {
       const { client } = getAwsClient();
-      expect(client.constructor.name).to.be.equal('AwsClient');
+      expect(client.constructor.name).toEqual('AwsClient');
     });
   });
 
@@ -98,7 +98,7 @@ describe('unit.app.api.aws.AwsClient', () => {
         const from = field[0] as { [key: string]: any };
         const expected = field[1];
 
-        expect(client.fromField(from)).to.be.deep.equal(expected);
+        expect(client.fromField(from)).toEqual(expected);
       });
     });
   });
@@ -110,7 +110,7 @@ describe('unit.app.api.aws.AwsClient', () => {
         const from = field[1];
         const expected = field[0];
 
-        expect(client.toField(from)).to.be.deep.equal(expected);
+        expect(client.toField(from)).toEqual(expected);
       });
     });
   });
