@@ -31,10 +31,14 @@
     "types": [
       "@types/node",
       "@nuxt/types",
-      "mocha"
+      "@types/jest"
     ]
   },
+  "include": [
+    "app"
+  ],
   "exclude": [
+    "cypress",
     "node_modules",
   ]
 }

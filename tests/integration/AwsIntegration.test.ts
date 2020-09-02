@@ -1,7 +1,5 @@
 import * as fs from 'fs';
 
-import { expect } from 'chai';
-
 import { FileStorage } from '@/app/models/Model';
 import { getAwsClient } from '@/tests/utils/aws';
 
@@ -33,7 +31,7 @@ describe('tests.integration.app.api.aws.AwsClient', () => {
 
       const items = await client.list(namespace);
 
-      expect(items).to.be.deep.equal([]);
+      expect(items).toEqual([]);
     });
 
     it('Returns null when the item is not found', async () => {
@@ -43,7 +41,7 @@ describe('tests.integration.app.api.aws.AwsClient', () => {
 
       const item = await client.retrieve(namespace, uuid);
 
-      expect(item).to.be.equal(null);
+      expect(item).toEqual(null);
     });
 
     it('Creates and retrieves a project', async () => {
@@ -61,7 +59,7 @@ describe('tests.integration.app.api.aws.AwsClient', () => {
 
       const item = await client.retrieve(namespace, project.uuid);
 
-      expect(item).to.be.deep.equal(project);
+      expect(item).toEqual(project);
     });
 
     it('Updates an existing entry', async () => {
@@ -85,7 +83,7 @@ describe('tests.integration.app.api.aws.AwsClient', () => {
 
       const item = await client.retrieve(namespace, project.uuid);
 
-      expect(item).to.be.deep.equal(updated);
+      expect(item).toEqual(updated);
     });
 
 
@@ -105,7 +103,7 @@ describe('tests.integration.app.api.aws.AwsClient', () => {
 
       const item = await client.retrieve(namespace, project.uuid);
 
-      expect(item).to.be.equal(null);
+      expect(item).toEqual(null);
     });
   });
 

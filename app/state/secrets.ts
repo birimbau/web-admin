@@ -1,4 +1,4 @@
-import { computed, reactive } from '@nuxtjs/composition-api';
+import { computed, reactive } from '@vue/composition-api';
 import { LocalStorageHandler, PasswordHandler } from 'keylocal';
 
 import { user } from '@/app/state/user';

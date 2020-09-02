@@ -1,6 +1,5 @@
 
-import { ComputedRef } from '@vue/composition-api';
-import { ref, computed } from '@nuxtjs/composition-api';
+import { ref, computed, ComputedRef } from '@vue/composition-api';
 
 import { AbstractClient } from '@/app/api/AbstractClient';
 import { HttpClient } from '@/app/api/HttpClient';
