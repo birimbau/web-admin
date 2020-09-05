@@ -10,13 +10,20 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@vue/composition-api": "^1.0.0-beta.11",
+    "aws-sdk": "^2.747.0",
+    "axios": "^0.20.0",
     "core-js": "^3.6.5",
+    "keylocal": "^0.2.0",
+    "typeface-roboto": "^0.0.75",
+    "uuid": "^8.3.0",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuetify": "^2.2.11"
   },
   "devDependencies": {
     "@types/jest": "^24.0.19",
+    "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
     "@vue/cli-plugin-babel": "~4.5.0",

@@ -1,12 +1,15 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import vuetify from './plugins/vuetify';
+import Vue from 'vue';
 
-Vue.config.productionTip = false
+import '~/src/plugins/composition-api';
+import { vuetify } from '~/src/plugins/vuetify';
+import App from '~/src/App.vue';
+import { router } from '~/src/vue/router';
 
-new Vue({
+
+Vue.config.productionTip = false;
+
+new (Vue)({
   router,
+  render: (h) => h(App),
   vuetify,
-  render: h => h(App)
-}).$mount('#app')
+}).$mount('#app');
