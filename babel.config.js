@@ -1,5 +1,9 @@
-module.exports = {
+const vueConfig = {
   presets: [
-    '@vue/cli-plugin-babel/preset'
-  ]
-}
+    '@vue/cli-plugin-babel/preset',
+  ],
+};
+
+const cypressConfig = {};
+
+module.exports = process.env.CYPRESS_ENV ? cypressConfig : vueConfig;
