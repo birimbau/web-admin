@@ -3,7 +3,7 @@
 import moment from 'moment';
 import { concepts, fragments, projects } from '../../../../../tests/mocks/models';
 
-context('/concepts/detail/:uuid', () => {
+context('/concepts/:uuid', () => {
   const today = moment().format('YYYY-MM-DD');
   const [year, month, day] = today.split('-').map(Number);
 
@@ -11,7 +11,7 @@ context('/concepts/detail/:uuid', () => {
   const anotherDay = day >= 28 ? (day - 1) : (day + 1);
   const targetDate = moment(new Date([year, month, anotherDay].map(String).join('-'))).format('YYYY-MM-DD');
 
-  describe('With no uuid', () => {
+  describe('Creating a new concept', () => {
     const concept: any = {
       name: 'My Concept',
       description: 'My Description',
@@ -34,6 +34,7 @@ context('/concepts/detail/:uuid', () => {
     };
 
     beforeEach(() => {
+      cy.useHttp();
       cy.server();
       cy.route('GET', '/api/concepts/**', {}).as('concepts/get');
       cy.route('POST', '/api/concepts', {}).as('concepts/post');
@@ -46,7 +47,7 @@ context('/concepts/detail/:uuid', () => {
 
       cy.route('GET', '/api/projects', projects.valid).as('projects/get');
 
-      cy.visit('/concepts/detail');
+      cy.visit('/concepts/new');
     });
 
     it('Displays a valid page', () => {
@@ -172,7 +173,7 @@ context('/concepts/detail/:uuid', () => {
       cy.route('GET', '/api/fragments', fragments.valid).as('fragments/get');
       cy.route('GET', '/api/projects', projects.valid).as('projects/get');
 
-      cy.visit(`/concepts/detail/${concept.uuid}`);
+      cy.visit(`/concepts/${concept.uuid}`);
     });
 
     it('Displays a valid page', () => {

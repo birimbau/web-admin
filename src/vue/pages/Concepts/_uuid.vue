@@ -121,7 +121,7 @@ export default defineComponent({
     };
 
     onBeforeMount(async () => {
-      if (router.currentRoute.params.uuid) {
+      if (router.currentRoute.params.uuid !== 'new') {
         concept.value = await Concept.retrieve(router.currentRoute.params.uuid as string);
 
         (await Fragment.list())

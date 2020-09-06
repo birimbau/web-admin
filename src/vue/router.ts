@@ -31,7 +31,7 @@ export const routes: Array<RouteConfig> = [
 
   // Concepts
   createRoute('Concepts/Index'),
-  createRoute('Concepts/Detail/_uuid'),
+  createRoute('Concepts/_uuid'),
 ];
 
 console.log(routes);

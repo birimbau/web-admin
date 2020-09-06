@@ -2,12 +2,12 @@
 
 import { concepts } from '../../../../tests/mocks/models';
 
-context('/concepts/list', () => {
+context('/concepts', () => {
   describe('With no concepts', () => {
     beforeEach(() => {
       cy.server();
       cy.route('GET', '/api/concepts', []);
-      cy.visit('/concepts/list');
+      cy.visit('/concepts');
     });
 
     it('Displays a valid page', () => {
@@ -21,7 +21,7 @@ context('/concepts/list', () => {
     beforeEach(() => {
       cy.server();
       cy.route('GET', '/api/concepts', [concept]);
-      cy.visit('/concepts/list');
+      cy.visit('/concepts');
     });
 
     it('Displays a valid page', () => {

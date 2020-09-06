@@ -2,7 +2,7 @@
 
 import { projects } from '../../../tests/mocks/models';
 
-context('/projects', () => {
+context.skip('/projects', () => {
   describe('With no projects', () => {
     beforeEach(() => {
       cy.server();

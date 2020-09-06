@@ -74,7 +74,13 @@ export const service = computed(() => {
   }
 });
 
-export const ready = computed(() => Boolean(service.value?.ready.value));
+export const ready = computed(() => {
+  if (clientName.value === 'http') {
+    return true;
+  }
+
+  Boolean(service.value?.ready.value);
+});
 
 /**
  * Tracks the current client.
