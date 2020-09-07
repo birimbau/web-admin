@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "publish:netlify": "yarn build --modern",
-    "test:unit": "vue-cli-service test:unit",
-    "test:e2e": "vue-cli-service test:e2e",
+    "serve": "vue-cli-service serve",
+    "serve:dist": "yarn serve --mode production",
+    "test:unit": "yarn jest --selectProjects unit",
+    "test:integration": "yarn jest --selectProjects integration",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -24,6 +25,7 @@
     "vuetify": "^2.2.11"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.10.4",
     "@types/jest": "^24.0.19",
     "@types/jsdom": "^16.2.4",
     "@types/sinon": "^9.0.5",
@@ -34,13 +36,13 @@
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-plugin-typescript": "~4.5.0",
-    "@vue/cli-plugin-unit-jest": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/eslint-config-typescript": "^5.0.2",
     "@vue/test-utils": "^1.0.3",
     "cypress": "^5.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
+    "jest": "^26.4.2",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "sinon": "^9.0.3",
