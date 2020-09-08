@@ -8,9 +8,10 @@
         :key="concept.uuid"
         name="concepts__list__detail_link"
       >
-        <router-link :to="`/concepts/detail/${concept.uuid}`">
+        <div><router-link to="/concepts/new">New</router-link></div>
+        <div><router-link :to="`/concepts/${concept.uuid}`">
           {{ concept.name }}
-        </router-link>
+        </router-link></div>
       </target>
     </div>
     <div v-else>

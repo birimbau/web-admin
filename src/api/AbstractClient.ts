@@ -1,4 +1,4 @@
-import { FileMetadata } from '~/src/models/Model';
+import { FileMetadata } from '~/src/files/metadata';
 
 
 export abstract class AbstractClient {
@@ -7,8 +7,8 @@ export abstract class AbstractClient {
   abstract async create<T>(namespace: string, values: Required<T>): Promise<Required<T>>;
   abstract async update<T>(namespace: string, uuid: string, values: Required<T>): Promise<Required<T>>;
   abstract async remove<T>(namespace: string, uuid: string): Promise<void>;
-  abstract async uploadFile<T>(namespace: string, uuid: string, metadata: Required<FileMetadata>, file: any): Promise<void>
-  abstract async deleteFile<T>(namespace: string, uuid: string, metadata: Required<FileMetadata>): Promise<void>
+  abstract async uploadFile<T>(namespace: string, uuid: string, metadata: FileMetadata, file: any): Promise<void>
+  abstract async deleteFile<T>(namespace: string, uuid: string, metadata: FileMetadata): Promise<void>
 
   get prefix() {
     return '/';
@@ -20,7 +20,7 @@ export abstract class AbstractClient {
    * @param uuid
    * @param meta
    */
-  getFileKey(namespace: string, uuid: string, meta: Required<FileMetadata>): string {
+  getFileKey(namespace: string, uuid: string, meta: FileMetadata): string {
     const ext = (meta.mime.split('/').pop() ?? 'txt').toLowerCase();
     const key = `media/${namespace}/${uuid}.${ext}`;
 
@@ -33,7 +33,7 @@ export abstract class AbstractClient {
    * @param uuid
    * @param meta
    */
-  getFileUrl(namespace: string, uuid: string, meta: Required<FileMetadata>): string {
+  getFileUrl(namespace: string, uuid: string, meta: FileMetadata): string {
     const key = this.getFileKey(namespace, uuid, meta);
 
     return `${this.prefix}${key}`;

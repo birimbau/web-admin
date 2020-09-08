@@ -1,23 +1,37 @@
 import * as fs from 'fs';
 
-import { FileStorage } from '~/src/models/Model';
+import { FileStorage, FileMetadata } from '~/src/files/metadata';
 import { getAwsClient } from '~/tests/utils/aws';
 
+interface DataRef {
+  namespace: string;
+  uuid: string;
+}
+
+interface FileRef extends DataRef {
+  metadata: FileMetadata;
+}
+
+interface TestContext {
+  refs: DataRef[];
+  files: FileRef[];
+}
+
 describe('tests.integration.app.api.aws.AwsClient', () => {
-  const context = {
-    refs: <Array<{ namespace: string; uuid: string }>>[],
-    files: <Array<{ namespace: string; uuid: string; metadata: any }>>[],
+  const context: TestContext = {
+    refs: [],
+    files: [],
   };
 
   afterEach(async () => {
     const { client } = getAwsClient();
 
     await Promise.all(
-      context.refs.map((ref: any) => client.remove(ref.namespace, ref.uuid)),
+      context.refs.map((ref: DataRef) => client.remove(ref.namespace, ref.uuid)),
     );
 
     await Promise.all(
-      context.files.map((ref: any) => client.deleteFile(ref.namespace, ref.uuid, ref.metadata)),
+      context.files.map((ref: FileRef) => client.deleteFile(ref.namespace, ref.uuid, ref.metadata)),
     );
 
     context.refs = [];
