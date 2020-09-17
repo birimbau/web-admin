@@ -1,7 +1,8 @@
 /// <reference types="cypress" />
 
 import moment from 'moment';
-import { concepts, fragments, projects } from '../../../../../tests/mocks/models';
+import { concepts, fragments, projects } from '../../../../tests/mocks/models';
+import { getFile } from '../../../support/utils';
 
 context('/concepts/:uuid', () => {
   const today = moment().format('YYYY-MM-DD');
@@ -13,7 +14,7 @@ context('/concepts/:uuid', () => {
 
   describe('Creating a new concept', () => {
     const concept: any = {
-      name: 'My Concept',
+      name: 'assets/alinatrifan.sheffield',
       description: 'My Description',
       projects: [projects.valid[0].uuid],
       tags: ['my-tag', 'another-tag'],
@@ -24,14 +25,55 @@ context('/concepts/:uuid', () => {
     };
 
     const fragment: any = {
+      uuid: "8de15315-0719-4ae4-96b9-40cdfd1145fc",
+      concept: "1f95737a-0344-4791-8680-02de5af82a7d",
       meta: {
-        filename: 'assets/alinatrifan.sheffield.jpg',
-        mime: '',
-        size: 201256,
-        storage: 'PREVIEW',
+          filename: "assets/alinatrifan.sheffield.jpg",
+          mime: "image/jpeg",
+          size: 201256,
+          storage: "PREVIEW",
+          tags: {
+              "Bits Per Sample": {
+                  "value": 8,
+                  "description": "8"
+              },
+              "Image Height": {
+                  "value": 853,
+                  "description": "853px"
+              },
+              "Image Width": {
+                  "value": 1280,
+                  "description": "1280px"
+              },
+              "Color Components": {
+                  "value": 3,
+                  "description": "3"
+              },
+              "Subsampling": {
+                  "value": [
+                      [
+                          1,
+                          17,
+                          0
+                      ],
+                      [
+                          2,
+                          17,
+                          1
+                      ],
+                      [
+                          3,
+                          17,
+                          1
+                      ]
+                  ],
+                  "description": "YCbCr4:4:4 (1 1)"
+              }
+          },
+          date: null
       },
-      notes: 'Some Note...',
-    };
+      notes: "Some Note..."
+  }
 
     beforeEach(() => {
       cy.useHttp();
@@ -50,17 +92,23 @@ context('/concepts/:uuid', () => {
       cy.visit('/concepts/new');
     });
 
+
     it('Displays a valid page', () => {
+
       cy.wait('@projects/get');
+
+      cy.getFile('assets/alinatrifan.sheffield.jpg', 'image/jpeg')
+        .then((value) => {
+          cy.get('.dropzone')
+          .trigger('dagover')
+          .trigger('drop', { dataTransfer: value.dataTransfer });
+        });
 
       cy.get('[cy-target-name="fragment__card"]')
         .should('not.exist');
 
-      cy.get('[name="concept__name"]')
-        .should('have.value', '')
-        .click()
-        .type(concept.name)
-        .should('have.value', concept.name);
+      cy.get('[data-cy="concept__name"]')
+        .contains('assets/alinatrifan.sheffield');
 
       cy.get('[name="concept__description"]')
         .should('have.value', '')
@@ -102,9 +150,6 @@ context('/concepts/:uuid', () => {
       cy.get('[name="concept__date"]')
         .should('have.value', concept.date);
 
-      cy.get('#concept__file')
-        .should('not.exist');
-
       cy.get('[data-cy="concept__create"]')
         .click();
 
@@ -114,12 +159,6 @@ context('/concepts/:uuid', () => {
           fragment.concept = concept.uuid;
           expect(xhr.request.body).to.deep.equal(concept);
         });
-
-      cy.get('#concept__file')
-        .attachFile('assets/alinatrifan.sheffield.jpg', 'image/jpeg')
-        .should('have.value', 'C:\\fakepath\\assets/alinatrifan.sheffield.jpg')
-        .trigger('change', { force: true })
-        .should('have.value', '');
 
       cy.get('[cy-target-name="fragment__card"]');
 
@@ -181,7 +220,7 @@ context('/concepts/:uuid', () => {
       cy.wait('@fragments/get');
       cy.wait('@projects/get');
 
-      cy.get('[name="concept__name"]').should('have.value', concept.name);
+      cy.get('[data-cy="concept__name"]').contains(concept.name);
       cy.get('[name="concept__description"]').should('have.value', concept.description);
       cy.get('[name="concept__type"]').should('have.value', concept.type);
       cy.get('[name="concept__projects"]').should('have.value', concept.projects.join(','));

@@ -34,8 +34,6 @@ export const routes: Array<RouteConfig> = [
   createRoute('Concepts/_uuid'),
 ];
 
-console.log(routes);
-
 export const router = new Router({
   mode: 'history',
   routes,

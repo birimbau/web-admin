@@ -2,17 +2,13 @@
 import moment from 'moment';
 
 import { modelize, ModelProps } from '~/src/models/Model';
+import { FileCategory } from '~/src/files/metadata';
 
-export enum ConceptType {
-  IMAGE = 'IMAGE',
-  SOUND = 'SOUND',
-  VIDEO = 'VIDEO',
-}
 
 export interface ConceptProps extends ModelProps {
   name?: string;
   description?: string;
-  type: ConceptType;
+  type: FileCategory;
   projects?: string[];
   tags?: string[];
   date?: string;
@@ -26,7 +22,7 @@ const namespace = 'concepts';
 const fields: Array<keyof ConceptProps> = ['uuid', 'name', 'description', 'type', 'projects', 'tags', 'date', 'public', 'featured'];
 
 export class Concept extends modelize<ConceptProps>(namespace, fields) {
-  static Type = ConceptType;
+  static Type = FileCategory;
 
   constructor(props: ConceptProps) {
     super(props);

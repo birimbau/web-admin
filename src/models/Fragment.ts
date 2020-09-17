@@ -1,4 +1,5 @@
-import { modelize, ModelProps, FileMetadata, FileStorage } from '~/src/models/Model';
+import { modelize, ModelProps } from '~/src/models/Model';
+import { FileMetadata, FileStorage, readFile } from '~/src/files/metadata';
 
 
 export interface FragmentProps extends ModelProps {
@@ -28,21 +29,25 @@ export class Fragment extends modelize<FragmentProps>(namespace, fields) {
   }
 
   async setFile(file: File) {
-    const fr = this.getFileReader();
+    const { preview, date, tags } = await readFile(file);
 
     this.file = file;
 
     this.meta.filename = file.name;
     this.meta.size = file.size;
     this.meta.mime = file.type;
+    this.meta.tags = tags;
+    this.meta.date = date;
 
-    this.data = await new Promise((resolve) => {
-      fr.onload = () => resolve(fr.result as string);
-      fr.readAsDataURL(file);
-    });
-
-
+    this.data = preview;
     return this.data;
+  }
+
+  get name() {
+    const fragments = this.meta.filename.split('.');
+    fragments.pop();
+
+    return fragments.join('.');
   }
 
   get url() {

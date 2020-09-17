@@ -2,7 +2,7 @@ import S3 from 'aws-sdk/clients/s3';
 import DynamoDB from 'aws-sdk/clients/dynamodb';
 
 import { HttpClient } from '~/src/api/HttpClient';
-import { FileMetadata, FileStorage } from '~/src/models/Model';
+import { FileMetadata, FileStorage } from '~/src/files/metadata';
 
 
 export interface AwsCredentials {
@@ -197,7 +197,7 @@ export class AwsClient extends HttpClient {
     await this.dynamo.deleteItem(params).promise();
   }
 
-  async uploadFile<T>(namespace: string, uuid: string, meta: Required<FileMetadata>, file: any): Promise<void> {
+  async uploadFile<T>(namespace: string, uuid: string, meta: FileMetadata, file: any): Promise<void> {
     const params = {
       Bucket: this.getBucket(),
       Key: this.getFileKey(namespace, uuid, meta),
@@ -210,7 +210,7 @@ export class AwsClient extends HttpClient {
     await this.s3.putObject(params).promise();
   }
 
-  async deleteFile<T>(namespace: string, uuid: string, meta: Required<FileMetadata>): Promise<void> {
+  async deleteFile<T>(namespace: string, uuid: string, meta: FileMetadata): Promise<void> {
     const params = {
       Bucket: this.getBucket(),
       Key: this.getFileKey(namespace, uuid, meta),
@@ -219,7 +219,7 @@ export class AwsClient extends HttpClient {
     await this.s3.deleteObject(params).promise();
   }
 
-  headFile<T>(namespace: string, uuid: string, meta: Required<FileMetadata>) {
+  headFile<T>(namespace: string, uuid: string, meta: FileMetadata) {
     const params = {
       Bucket: this.getBucket(),
       Key: this.getFileKey(namespace, uuid, meta),

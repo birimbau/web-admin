@@ -79,7 +79,7 @@ export const ready = computed(() => {
     return true;
   }
 
-  Boolean(service.value?.ready.value);
+  return Boolean(service.value?.ready.value);
 });
 
 /**

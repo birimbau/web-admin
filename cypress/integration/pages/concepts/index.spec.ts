@@ -27,7 +27,12 @@ context('/concepts', () => {
     it('Displays a valid page', () => {
       cy.get(`#concepts__list__detail_link__${concept.uuid}`).within(() => {
         cy.contains(concept.name);
-        cy.get('a').should('have.attr', 'href', `/concepts/detail/${concept.uuid}`);
+        cy.get('a')
+          .contains('New')
+          .should('have.attr', 'href', '/concepts/new');
+        cy.get('a')
+          .contains(concept.name)
+          .should('have.attr', 'href', `/concepts/${concept.uuid}`);
       });
     });
   });
