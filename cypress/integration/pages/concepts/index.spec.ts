@@ -11,7 +11,13 @@ context('/concepts', () => {
     });
 
     it('Displays a valid page', () => {
-      cy.contains('No concepts defined yet.');
+      cy.contains('No concepts defined yet');
+
+      cy.contains('Create New')
+        .click();
+
+      cy.url()
+        .should('include', '/concepts/new');
     });
   });
 
@@ -25,14 +31,14 @@ context('/concepts', () => {
     });
 
     it('Displays a valid page', () => {
-      cy.get(`#concepts__list__detail_link__${concept.uuid}`).within(() => {
+      cy.get(`[data-cy="concepts__table__${concept.uuid}"]`).within(() => {
         cy.contains(concept.name);
-        cy.get('a')
-          .contains('New')
-          .should('have.attr', 'href', '/concepts/new');
-        cy.get('a')
-          .contains(concept.name)
-          .should('have.attr', 'href', `/concepts/${concept.uuid}`);
+        cy.contains("Delete");
+
+        cy.contains("Open").click();
+
+        cy.url()
+          .should('include', `/concepts/${concept.uuid}`);
       });
     });
   });
