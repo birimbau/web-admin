@@ -1,14 +1,14 @@
 <template>
   <v-app>
     <div class="mt-5 mx-auto photion-container">
-      <header>
+      <header class="mb-10">
         <router-link to="/">
-          <h1 class="mb-10">
-            <span class="text-h2">
+          <h1>
+            <div><span class="text-h2">
               Photion
-            </span>
-            <span v-if="service" class="text-caption">with {{ service.name }}</span>
+            </span></div>
           </h1>
+          <div><span v-if="service" class="text-caption">with {{ service.name }}</span></div>
         </router-link>
       </header>
       <v-main>

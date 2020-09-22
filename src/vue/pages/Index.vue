@@ -1,15 +1,35 @@
 <template>
   <div>
-    <div>
-      <router-link to="/services">
-        Pick a service
-      </router-link>
-    </div>
-    <div v-if="ready">
-      <router-link to="/concepts">
-        Media List
-      </router-link>
-    </div>
+    <v-row>
+      <v-col cols="12" sm="4">
+        <v-card>
+          <router-link to="/services" class="no-decoration">
+            <v-card-text>
+              <strong class="text-overline">
+                Pick a Service
+              </strong>
+              <div class="text--secondary">
+                You will provide credentials so that you can upload and classify your files.
+              </div>
+            </v-card-text>
+          </router-link>
+        </v-card>
+      </v-col>
+      <v-col v-if="ready" cols="12" sm="4">
+        <v-card>
+          <router-link to="/concepts" class="no-decoration">
+            <v-card-text>
+              <strong class="text-overline">
+                List Concepts
+              </strong>
+              <div class="text--secondary">
+                Navigate, search and manage your media archive.
+              </div>
+            </v-card-text>
+          </router-link>
+        </v-card>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -27,3 +47,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.no-decoration {
+  text-decoration: none;
+}
+</style>
