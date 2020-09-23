@@ -1,20 +1,6 @@
 <template>
   <div>
     <v-row>
-      <v-col cols="12" sm="4">
-        <v-card>
-          <router-link to="/services" class="no-decoration">
-            <v-card-text>
-              <strong class="text-overline">
-                Pick a Service
-              </strong>
-              <div class="text--secondary">
-                You will provide credentials so that you can upload and classify your files.
-              </div>
-            </v-card-text>
-          </router-link>
-        </v-card>
-      </v-col>
       <v-col v-if="ready" cols="12" sm="4">
         <v-card>
           <router-link to="/concepts" class="no-decoration">
@@ -24,6 +10,20 @@
               </strong>
               <div class="text--secondary">
                 Navigate, search and manage your media archive.
+              </div>
+            </v-card-text>
+          </router-link>
+        </v-card>
+      </v-col>
+      <v-col cols="12" sm="4">
+        <v-card>
+          <router-link to="/services" class="no-decoration">
+            <v-card-text>
+              <strong class="text-overline">
+                Pick a Service
+              </strong>
+              <div class="text--secondary">
+                You will provide credentials so that you can upload and classify your files.
               </div>
             </v-card-text>
           </router-link>
