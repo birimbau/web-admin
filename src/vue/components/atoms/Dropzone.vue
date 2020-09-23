@@ -1,8 +1,9 @@
 <template>
   <div v-on="events" class="dropzone" :class="{ dragging }">
     <slot>
-      <span class="text-h4">{{ label }}</span>
+      <div @click="click" style="width: 100%; height: 100%">{{ label }}</div>
     </slot>
+    <input ref="fileInput" type="file" style="display:none" />
   </div>
 </template>
 
@@ -14,13 +15,20 @@ export default defineComponent({
   props: {
     label: {
       type: String,
-      default: () => 'Drop files',
+      default: () => 'Click anywhere or drop files',
     },
   },
 
   setup(_props, { emit }) {
     const count = ref(0);
     const dragging = computed(() => Boolean(count.value));
+    const fileInput = ref<HTMLElement | null>(null);
+
+    const click = () => {
+      if (fileInput.value) {
+        fileInput.value.click();
+      }
+    };
 
     const dragenter = ($event: DragEvent) => {
       count.value++;
@@ -52,6 +60,8 @@ export default defineComponent({
 
     return {
       dragging,
+      fileInput,
+      click,
       events: {
         dragenter,
         dragleave,
