@@ -2,14 +2,23 @@ import Vue from 'vue';
 
 import '~/src/plugins/composition-api';
 import { vuetify } from '~/src/plugins/vuetify';
-import App from '~/src/App.vue';
+import { init } from '~/src/state/secrets';
+import { appLoaded } from '~/src/state/service';
 import { router } from '~/src/vue/router';
+import App from '~/src/App.vue';
 
+export const main = async () => {
+  await init();
 
-Vue.config.productionTip = false;
+  Vue.config.productionTip = false;
 
-new (Vue)({
-  router,
-  render: (h) => h(App),
-  vuetify,
-}).$mount('#app');
+  new (Vue)({
+    router,
+    render: (h) => h(App),
+    vuetify,
+  }).$mount('#app');
+
+  appLoaded.value = true;
+};
+
+main();

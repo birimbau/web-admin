@@ -13,7 +13,7 @@ context('/', () => {
     });
   });
 
-  describe('Without a client in localStorage', () => {
+  describe('Using the HTTP Client', () => {
     beforeEach(() => {
       window.localStorage.setItem('PHOTION_INTEGRATION', 'http');
       cy.visit('/');

@@ -5,6 +5,7 @@ import { concepts } from '../../../../tests/mocks/models';
 context('/concepts', () => {
   describe('With no concepts', () => {
     beforeEach(() => {
+      cy.useHttp();
       cy.server();
       cy.route('GET', '/api/concepts', []);
       cy.visit('/concepts');
@@ -25,6 +26,7 @@ context('/concepts', () => {
     const concept = concepts.valid[0];
 
     beforeEach(() => {
+      cy.useHttp();
       cy.server();
       cy.route('GET', '/api/concepts', [concept]);
       cy.visit('/concepts');

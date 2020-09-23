@@ -95,3 +95,5 @@ export const client = computed((): AbstractClient => {
 
   return new HttpClient();
 });
+
+export const appLoaded = ref(false);
