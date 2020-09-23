@@ -1,38 +1,34 @@
 <template>
-  <v-card
-    outlined
-  >
-    <v-row dense>
-      <v-col cols="3" style="text-align: center">
-        <v-img :src="service.logo" class="ma-3" />
-      </v-col>
-      <v-col cols="9" class="pr-3">
-        <div>
-          <span class="text-overline">{{ service.name }}</span>
-        </div>
-        <div>
-          <span class="text-caption">
-            {{ service.description }}
-          </span>
-        </div>
-        <div class="text-right">
-          <div v-if="selected">
-            <router-link to="/services">
-              <v-btn small text color="error">
-                Use another service
-              </v-btn>
-            </router-link>
+  <v-card outlined>
+    <router-link :to="data.target" class="text--secondary">
+      <v-row dense>
+        <v-col cols="3" style="text-align: center">
+          <v-img :src="service.logo" class="ma-3" />
+        </v-col>
+        <v-col cols="9" class="pr-3">
+          <div>
+            <span class="text-overline">{{ service.name }}</span>
           </div>
-          <div v-else>
-            <router-link :to="'/services/' + service.slug">
+          <div>
+            <span class="text-caption">
+              {{ service.description }}
+            </span>
+          </div>
+          <div class="text-right">
+            <div v-if="selected">
+              <v-btn small text color="error">
+                Back to all services
+              </v-btn>
+            </div>
+            <div v-else>
               <v-btn small text color="primary">
                 Select
               </v-btn>
-            </router-link>
+            </div>
           </div>
-        </div>
-      </v-col>
-    </v-row>
+        </v-col>
+      </v-row>
+    </router-link>
   </v-card>
 </template>
 
@@ -52,6 +48,16 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+  },
+
+  setup(props) {
+    const target = props.selected ? '/services' : `/services/${props.service.slug}`;
+
+    return {
+      data: {
+        target,
+      },
+    };
   },
 });
 </script>
