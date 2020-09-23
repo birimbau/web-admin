@@ -206,6 +206,7 @@ context('/concepts/:uuid', () => {
     const concept = concepts.valid[0];
 
     beforeEach(() => {
+      cy.useHttp();
       cy.server();
 
       cy.route('GET', `/api/concepts/${concept.uuid}`, concept).as('concepts/get');

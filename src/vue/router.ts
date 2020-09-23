@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router, { RouteConfig } from 'vue-router';
 
+import { ready } from '~/src/state/service';
 
 Vue.use(Router);
 
@@ -37,4 +38,17 @@ export const routes: Array<RouteConfig> = [
 export const router = new Router({
   mode: 'history',
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.path === '/') {
+    return next();
+  }
+
+  if (!ready.value) {
+    if (!to.path.startsWith('/services')) {
+      return next('/services');
+    }
+  }
+  next();
 });
