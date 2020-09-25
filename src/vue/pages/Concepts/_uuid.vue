@@ -83,7 +83,7 @@
 
 
 <script lang="ts">
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { defineComponent, ref, onBeforeMount, watch } from '@vue/composition-api';
 
 import { Concept } from '~/src/models/Concept';
@@ -135,7 +135,7 @@ export default defineComponent({
       concept.value.name = fragment.name;
 
       if (fragment.meta.date) {
-        concept.value.date = moment(fragment.meta.date).format('YYYY-MM-DD');
+        concept.value.date = dayjs(fragment.meta.date).format('YYYY-MM-DD');
       }
     };
 

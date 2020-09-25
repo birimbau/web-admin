@@ -4,21 +4,21 @@
   "private": true,
   "scripts": {
     "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
     "publish:netlify": "yarn build --modern",
     "serve": "vue-cli-service serve",
     "serve:dist": "yarn serve --mode production",
-    "test:unit": "yarn jest --selectProjects unit",
     "test:integration": "yarn jest --selectProjects integration",
-    "lint": "vue-cli-service lint"
+    "test:unit": "yarn jest --selectProjects unit"
   },
   "dependencies": {
     "@vue/composition-api": "^1.0.0-beta.11",
     "aws-sdk": "^2.747.0",
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
+    "dayjs": "^1.8.36",
     "exifreader": "^3.12.2",
-    "keylocal": "^0.2.0",
-    "moment": "^2.27.0",
+    "keylocal": "^0.4.1",
     "typeface-roboto": "^0.0.75",
     "uuid": "^8.3.0",
     "vue": "^2.6.11",

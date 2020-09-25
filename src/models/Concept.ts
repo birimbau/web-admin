@@ -1,5 +1,5 @@
 
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 import { modelize, ModelProps } from '~/src/models/Model';
 import { FileCategory } from '~/src/files/metadata';
@@ -31,7 +31,7 @@ export class Concept extends modelize<ConceptProps>(namespace, fields) {
     this.type = props.type;
     this.projects = props.projects ?? [];
     this.tags = props.tags ?? [];
-    this.date = props.date ?? moment().format('YYYY-MM-DD');
+    this.date = props.date ?? dayjs().format('YYYY-MM-DD');
     this.public = props.public ?? false;
     this.featured = props.featured ?? false;
   }
