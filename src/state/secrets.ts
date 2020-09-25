@@ -1,5 +1,6 @@
 import { computed, reactive } from '@vue/composition-api';
-import { LocalStorageHandler, PasswordHandler } from 'keylocal';
+import { LocalStorageHandler } from 'keylocal/storage/localStorage';
+import { WebCryptoAesGcpHandler } from 'keylocal/strategy/web/aes-gcp';
 
 import { user } from '~/src/state/user';
 
@@ -7,7 +8,7 @@ import { user } from '~/src/state/user';
 export const PHOTION_ENCRYPTION_STORAGE_KEY = 'PHOTION_ENCRYPTION_STORAGE_KEY';
 export const PHOTION_SESSION_CREDENTIALS = 'PHOTION_SESSION_CREDENTIALS';
 
-export const strategy = new PasswordHandler();
+export const strategy = new WebCryptoAesGcpHandler();
 
 export const handler = new LocalStorageHandler(PHOTION_ENCRYPTION_STORAGE_KEY, {
   strategy,

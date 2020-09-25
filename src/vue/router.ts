@@ -10,7 +10,7 @@ interface RouteOptions {
 }
 
 export const createRoute = (name: string, options: RouteOptions = {}) => {
-  const component = () => import(`./pages/${name}.vue`);
+  const component = () => import(/* webpackChunkName: "[request]" */ `./pages/${name}.vue`);
 
   return {
     name,

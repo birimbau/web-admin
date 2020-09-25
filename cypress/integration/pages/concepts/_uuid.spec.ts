@@ -1,16 +1,16 @@
 /// <reference types="cypress" />
 
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { concepts, fragments, projects } from '../../../../tests/mocks/models';
 import { getFile } from '../../../support/utils';
 
 context('/concepts/:uuid', () => {
-  const today = moment().format('YYYY-MM-DD');
+  const today = dayjs().format('YYYY-MM-DD');
   const [year, month, day] = today.split('-').map(Number);
 
   // Ensure another day has 2 digits
   const anotherDay = day >= 28 ? (day - 1) : (day + 1);
-  const targetDate = moment(new Date([year, month, anotherDay].map(String).join('-'))).format('YYYY-MM-DD');
+  const targetDate = dayjs(new Date([year, month, anotherDay].map(String).join('-'))).format('YYYY-MM-DD');
 
   describe('Creating a new concept', () => {
     const concept: any = {
@@ -132,7 +132,7 @@ context('/concepts/:uuid', () => {
         .type(`${concept.tags[1]}\n`, { force: true });
 
       cy.get('[name="concept__date"]')
-        .should('have.value', moment().format('YYYY-MM-DD'))
+        .should('have.value', dayjs().format('YYYY-MM-DD'))
         .click();
 
       cy.get('[data-cy="picker__concept__date"]')

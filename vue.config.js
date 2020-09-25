@@ -2,7 +2,7 @@ module.exports = {
   transpileDependencies: [
     'vuetify',
   ],
-  configureWebpack:{
+  configureWebpack: {
     optimization: {
       splitChunks: {
         minSize: 10000,
@@ -12,5 +12,6 @@ module.exports = {
   },
   chainWebpack: (config) => {
     config.resolve.alias.set('~', __dirname);
+    config.output.chunkFilename('js/[name].[id].[chunkhash:8].js');
   },
 };
