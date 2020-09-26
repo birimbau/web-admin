@@ -1,4 +1,5 @@
 # webapp-admin
+[![codecov](https://codecov.io/gh/dipasqualew/keylocal/branch/master/graph/badge.svg)](https://codecov.io/gh/dipasqualew/keylocal)
 
 ## Project setup
 ```

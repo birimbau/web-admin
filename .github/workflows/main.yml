@@ -21,15 +21,22 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - run: yarn install
+      - name: Install dependencies
+        run: yarn install
 
       - name: Run Unit Tests
         run: yarn test:unit
         env:
+          COVERAGE: true
           CI: true
 
-  integration-tests:
-    name: Run Integration Tests
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+  feature-tests:
+    name: Run Feature Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -56,8 +63,8 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
 
-      - name: Run Integration Tests
-        run: yarn test:integration
+      - name: Run Feature Tests
+        run: yarn test:feat
         env:
           CI: true
 
