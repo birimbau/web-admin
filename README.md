@@ -1,5 +1,6 @@
 # webapp-admin
-[![codecov](https://codecov.io/gh/dipasqualew/keylocal/branch/master/graph/badge.svg)](https://codecov.io/gh/dipasqualew/keylocal)
+![Tests](https://github.com/photion/web-admin/workflows/Tests/badge.svg)
+[![codecov](https://codecov.io/gh/photion/web-admin/branch/master/graph/badge.svg)](https://codecov.io/gh/photion/web-admin)
 
 ## Project setup
 ```
