@@ -2,6 +2,7 @@ import Vue from 'vue';
 
 import '~/src/plugins/composition-api';
 import '~/src/plugins/sentry';
+import '~/src/plugins/font-awesome';
 import '@/assets/scss/main.scss';
 import { init } from '~/src/state/secrets';
 import { appLoaded } from '~/src/state/service';
