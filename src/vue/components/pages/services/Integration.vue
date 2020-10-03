@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PhoCard :cy="`integration:${service.slug}`" clickable logo="service.logo">
+    <PhoCard :cy="`integration:${service.slug}`" clickable :logo="service.logo">
       <router-link :to="data.target">
         <div><strong>{{ service.name }}</strong></div>
         <div><small>{{ service.description }}</small></div>
@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 
 import { Service } from '~/src/models/services';
 import PhoCard from '~/src/vue/components/ui/PhoCard.vue';
